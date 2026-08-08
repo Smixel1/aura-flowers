@@ -3,10 +3,10 @@ export type LeadSource = "catalog" | "bespoke" | "ai" | "contact";
 export type Lead = {
   name: string;
   phone: string;
-  occasion?: string;
-  budget?: string;
-  wishes?: string;
-  bouquet?: string;
+  occasion?: string | undefined;
+  budget?: string | undefined;
+  wishes?: string | undefined;
+  bouquet?: string | undefined;
   source: LeadSource;
   createdAt: string;
 };

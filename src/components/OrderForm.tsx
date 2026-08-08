@@ -28,12 +28,12 @@ export function OrderForm({
   const [occasion, setOccasion] = useState(prefill.occasion ?? "");
   const [budget, setBudget] = useState(prefill.budget ?? "");
   const [wishes, setWishes] = useState(prefill.wishes ?? "");
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<{ name?: string; phone?: string; occasion?: string }>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    const next: Record<string, string> = {};
+    const next: { name?: string; phone?: string; occasion?: string } = {};
     if (name.trim().length < 2) next.name = "Укажите имя";
     if (!phonePattern.test(phone.trim())) next.phone = "Телефон в формате +7 900 000 00 00";
     if (!occasion.trim()) next.occasion = "Выберите повод";
