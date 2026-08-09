@@ -190,19 +190,36 @@ function Home() {
         </Reveal>
       </section>
 
-      <section className="border-t border-border bg-secondary/50 py-28 lg:py-36">
+      <section className="border-t border-border bg-secondary/50 py-24 lg:py-32">
         <Reveal className="mx-auto max-w-2xl px-6 text-center">
-          <p className="eyebrow">AI-флорист</p>
-          <h2 className="mt-6 text-4xl sm:text-5xl">Не знаете, что выбрать?</h2>
+          <p className="eyebrow">Подбор букета</p>
+          <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl">Не знаете, что выбрать?</h2>
           <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-            Ответьте на несколько вопросов — и мы предложим две-три композиции, собранные под
-            характер получателя, а не под повод.
+            Ответьте на пять вопросов — кому, по какому поводу, в какой гамме, на какой бюджет и
+            какого размера — и мы предложим три подходящие композиции из каталога.
           </p>
-          <button type="button" onClick={openChat} className="btn-gold mt-12">
+          <button type="button" onClick={openChat} className="btn-gold mt-10">
             Подобрать букет
           </button>
         </Reveal>
       </section>
+
+      <section className="border-t border-border py-24 lg:py-32">
+        <Reveal className="mx-auto max-w-2xl px-6 text-center">
+          <p className="eyebrow">Конструктор</p>
+          <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl">Создайте свой букет</h2>
+          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+            Выберите цветок, количество, цвет и упаковку — увидите примерную стоимость до
+            обращения к флористу.
+          </p>
+          <Link to="/bespoke" className="btn-gold mt-10">
+            Собрать букет
+          </Link>
+        </Reveal>
+      </section>
+
+      <DeliverySection />
+
 
       <ProductModal
         bouquet={active}
