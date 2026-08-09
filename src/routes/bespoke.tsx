@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Reveal } from "@/components/Reveal";
+import { BouquetConstructor } from "@/components/BouquetConstructor";
 import { phonePattern, submitLead } from "@/lib/submit-lead";
 import { formatPrice } from "@/data/bouquets";
 
@@ -60,7 +61,9 @@ function Bespoke() {
   }
 
   return (
-    <div className="mx-auto max-w-[1400px] px-6 pb-32 pt-40 lg:px-12 lg:pt-48">
+    <>
+    <BouquetConstructor />
+    <div className="mx-auto max-w-[1400px] px-6 pb-32 pt-24 lg:px-12 lg:pt-32">
       <div className="grid gap-20 lg:grid-cols-2">
         <Reveal>
           <p className="eyebrow">Индивидуальный заказ</p>
@@ -196,5 +199,6 @@ function Bespoke() {
         </Reveal>
       </div>
     </div>
+    </>
   );
 }
