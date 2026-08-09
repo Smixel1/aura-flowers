@@ -5,6 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductModal } from "@/components/ProductModal";
 import { TestimonialSlider } from "@/components/TestimonialSlider";
+import { DeliverySection } from "@/components/DeliverySection";
 import { useSiteUi } from "@/components/SiteUiProvider";
 import { bouquets, type Bouquet } from "@/data/bouquets";
 
