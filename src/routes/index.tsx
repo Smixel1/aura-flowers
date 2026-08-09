@@ -5,6 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductModal } from "@/components/ProductModal";
 import { TestimonialSlider } from "@/components/TestimonialSlider";
+import { DeliverySection } from "@/components/DeliverySection";
 import { useSiteUi } from "@/components/SiteUiProvider";
 import { bouquets, type Bouquet } from "@/data/bouquets";
 
@@ -55,7 +56,17 @@ const benefits = [
 function Home() {
   const { openOrder, openChat } = useSiteUi();
   const [active, setActive] = useState<Bouquet | null>(null);
-  const featured = bouquets.slice(0, 6);
+  const featuredIds = [
+    "march-light",
+    "cream-line",
+    "warm-whisper",
+    "peony-solo",
+    "round-letter",
+    "declaration",
+  ];
+  const featured = featuredIds
+    .map((id) => bouquets.find((b) => b.id === id))
+    .filter((b): b is Bouquet => Boolean(b));
 
   return (
     <>
@@ -67,30 +78,43 @@ function Home() {
           height={1200}
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-ink/45" />
-        <div className="relative mx-auto w-full max-w-[1400px] px-6 pb-24 pt-40 lg:px-12 lg:pb-32">
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/45 to-ink/25" />
+        <div className="relative mx-auto w-full max-w-[1400px] px-6 pb-20 pt-36 sm:pb-24 lg:px-12 lg:pb-32">
           <div className="max-w-2xl">
             <Reveal>
-              <p className="text-[0.65rem] uppercase tracking-[0.4em] text-gold">Москва · с 2014</p>
+              <p className="text-[0.65rem] uppercase tracking-[0.4em] text-gold">
+                Цветочный бутик в Москве · с 2014
+              </p>
             </Reveal>
             <Reveal delay={120}>
-              <h1 className="mt-8 text-4xl leading-[1.15] text-ink-foreground sm:text-6xl lg:text-7xl">
+              <h1 className="mt-6 text-4xl leading-[1.12] text-ink-foreground sm:mt-8 sm:text-6xl lg:text-7xl">
                 Цветы, которые говорят то, что не успевают сказать слова
               </h1>
             </Reveal>
             <Reveal delay={240}>
-              <p className="mt-8 max-w-md text-base leading-relaxed text-ink-foreground/75">
-                Авторские букеты для моментов, которые хочется запомнить.
+              <p className="mt-6 max-w-lg text-base leading-relaxed text-ink-foreground/80 sm:mt-8">
+                Букеты от 1 500 ₽ и авторские композиции ручной сборки. Доставим по Москве в
+                выбранный двухчасовой интервал и пришлём фото букета на согласование.
               </p>
             </Reveal>
             <Reveal delay={360}>
-              <Link to="/shop" className="btn-gold mt-12">
-                Собрать букет
-              </Link>
+              <div className="mt-10 flex flex-col gap-4 sm:mt-12 sm:flex-row sm:items-center">
+                <Link to="/shop" className="btn-gold w-full sm:w-auto">
+                  Выбрать букет
+                </Link>
+                <button
+                  type="button"
+                  onClick={openChat}
+                  className="link-underline w-full text-[0.7rem] uppercase tracking-[0.22em] text-ink-foreground/80 sm:w-auto"
+                >
+                  Не знаете, что выбрать?
+                </button>
+              </div>
             </Reveal>
           </div>
         </div>
       </section>
+
 
       <section className="mx-auto max-w-[1400px] px-6 py-28 lg:px-12 lg:py-36">
         <div className="grid gap-14 sm:grid-cols-2 lg:grid-cols-4">
@@ -166,19 +190,36 @@ function Home() {
         </Reveal>
       </section>
 
-      <section className="border-t border-border bg-secondary/50 py-28 lg:py-36">
+      <section className="border-t border-border bg-secondary/50 py-24 lg:py-32">
         <Reveal className="mx-auto max-w-2xl px-6 text-center">
-          <p className="eyebrow">AI-флорист</p>
-          <h2 className="mt-6 text-4xl sm:text-5xl">Не знаете, что выбрать?</h2>
+          <p className="eyebrow">Подбор букета</p>
+          <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl">Не знаете, что выбрать?</h2>
           <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-            Ответьте на несколько вопросов — и мы предложим две-три композиции, собранные под
-            характер получателя, а не под повод.
+            Ответьте на пять вопросов — кому, по какому поводу, в какой гамме, на какой бюджет и
+            какого размера — и мы предложим три подходящие композиции из каталога.
           </p>
-          <button type="button" onClick={openChat} className="btn-gold mt-12">
+          <button type="button" onClick={openChat} className="btn-gold mt-10">
             Подобрать букет
           </button>
         </Reveal>
       </section>
+
+      <section className="border-t border-border py-24 lg:py-32">
+        <Reveal className="mx-auto max-w-2xl px-6 text-center">
+          <p className="eyebrow">Конструктор</p>
+          <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl">Создайте свой букет</h2>
+          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+            Выберите цветок, количество, цвет и упаковку — увидите примерную стоимость до
+            обращения к флористу.
+          </p>
+          <Link to="/bespoke" className="btn-gold mt-10">
+            Собрать букет
+          </Link>
+        </Reveal>
+      </section>
+
+      <DeliverySection />
+
 
       <ProductModal
         bouquet={active}
