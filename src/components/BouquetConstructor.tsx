@@ -134,7 +134,7 @@ export function BouquetConstructor() {
           <p className="eyebrow">Конструктор</p>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl">Создайте свой букет</h2>
           <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-            Соберите composition по шагам — мы покажем примерную стоимость. Флорист свяжется с вами
+            Соберите композицию по шагам — мы покажем примерную стоимость. Флорист свяжется с вами
             и подтвердит наличие цветов и финальную цену.
           </p>
         </div>
