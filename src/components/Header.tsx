@@ -47,7 +47,9 @@ export function Header() {
               to={item.to}
               className={cn(
                 "link-underline text-[0.7rem] uppercase tracking-[0.22em] transition-colors",
-                transparent ? "text-ink-foreground/85 hover:text-gold" : "text-foreground/70 hover:text-gold",
+                transparent
+                  ? "text-ink-foreground/85 hover:text-gold"
+                  : "text-foreground/70 hover:text-gold",
               )}
               activeProps={{ className: "text-gold" }}
             >
@@ -66,7 +68,11 @@ export function Header() {
             transparent ? "text-ink-foreground" : "text-foreground",
           )}
         >
-          {menuOpen ? <X className="h-5 w-5" strokeWidth={1} /> : <Menu className="h-5 w-5" strokeWidth={1} />}
+          {menuOpen ? (
+            <X className="h-5 w-5" strokeWidth={1} />
+          ) : (
+            <Menu className="h-5 w-5" strokeWidth={1} />
+          )}
         </button>
 
         <Link
@@ -77,7 +83,9 @@ export function Header() {
           )}
         >
           <span className="font-display text-xl tracking-[0.34em] sm:text-2xl">LUNA</span>
-          <span className="mt-1 block text-[0.55rem] uppercase tracking-[0.5em] text-gold">Flowers</span>
+          <span className="mt-1 block text-[0.55rem] uppercase tracking-[0.5em] text-gold">
+            Flowers
+          </span>
         </Link>
 
         <nav className="hidden items-center justify-end gap-9 lg:flex">
@@ -87,7 +95,9 @@ export function Header() {
               to={item.to}
               className={cn(
                 "link-underline text-[0.7rem] uppercase tracking-[0.22em] transition-colors",
-                transparent ? "text-ink-foreground/85 hover:text-gold" : "text-foreground/70 hover:text-gold",
+                transparent
+                  ? "text-ink-foreground/85 hover:text-gold"
+                  : "text-foreground/70 hover:text-gold",
               )}
               activeProps={{ className: "text-gold" }}
             >

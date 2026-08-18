@@ -1,30 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Reveal } from "@/components/Reveal";
-import { phonePattern, submitLead } from "@/lib/submit-lead";
+import { formatTelegram, phonePattern, submitLead } from "@/lib/submit-lead";
+import { buildPageMeta } from "@/lib/seo-meta";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Контакты — LUNA FLOWERS" },
-      {
-        name: "description",
-        content:
-          "Мастерская LUNA FLOWERS: Большая Никитская 12, ежедневно 09:00–21:00. Телефон, WhatsApp, Telegram и форма быстрой связи.",
-      },
-      { property: "og:title", content: "Контакты — LUNA FLOWERS" },
-      {
-        property: "og:description",
-        content: "Приходите в мастерскую или напишите — ответим в течение двух часов.",
-      },
-    ],
-  }),
+  head: () =>
+    buildPageMeta({
+      title: "Контакты — LUNA FLOWERS",
+      description:
+        "Мастерская LUNA FLOWERS: Большая Никитская 12, ежедневно 09:00–21:00. Телефон, WhatsApp, Telegram и форма быстрой связи.",
+      ogDescription: "Приходите в мастерскую или напишите — ответим в течение двух часов.",
+      path: "/contact",
+    }),
   component: Contact,
 });
 
 function Contact() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [telegram, setTelegram] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -42,7 +37,8 @@ function Contact() {
       await submitLead({
         name: name.trim(),
         phone: phone.trim(),
-        wishes: message.trim(),
+        telegram: formatTelegram(telegram),
+        comment: message.trim() || undefined,
         source: "contact",
       });
       setStatus("sent");
@@ -115,7 +111,9 @@ function Contact() {
               <div className="border border-border p-12 text-center">
                 <p className="eyebrow">Сообщение отправлено</p>
                 <h2 className="mt-4 text-3xl">Спасибо</h2>
-                <p className="mt-4 text-sm text-muted-foreground">Мы ответим в течение двух часов.</p>
+                <p className="mt-4 text-sm text-muted-foreground">
+                  Мы ответим в течение двух часов.
+                </p>
               </div>
             ) : (
               <form
@@ -124,38 +122,56 @@ function Contact() {
                 className="space-y-10 border border-border p-8 sm:p-12"
               >
                 <p className="eyebrow">Быстрая связь</p>
-                <div>
-                  <label htmlFor="ct-name" className="eyebrow block">
-                    Имя
-                  </label>
-                  <input
-                    id="ct-name"
-                    className="field-input mt-2"
-                    value={name}
-                    autoComplete="name"
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Как к вам обращаться"
-                  />
-                  {errors.name ? (
-                    <p className="mt-2 text-xs text-destructive">{errors.name}</p>
-                  ) : null}
+                <div className="grid gap-8 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="ct-name" className="eyebrow block">
+                      Имя
+                    </label>
+                    <input
+                      id="ct-name"
+                      className="field-input mt-2"
+                      value={name}
+                      autoComplete="name"
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Как к вам обращаться"
+                    />
+                    {errors.name ? (
+                      <p className="mt-2 text-xs text-destructive">{errors.name}</p>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label htmlFor="ct-phone" className="eyebrow block">
+                      Телефон
+                    </label>
+                    <input
+                      id="ct-phone"
+                      className="field-input mt-2"
+                      value={phone}
+                      inputMode="tel"
+                      autoComplete="tel"
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="+7 900 000 00 00"
+                    />
+                    {errors.phone ? (
+                      <p className="mt-2 text-xs text-destructive">{errors.phone}</p>
+                    ) : null}
+                  </div>
                 </div>
                 <div>
-                  <label htmlFor="ct-phone" className="eyebrow block">
-                    Телефон
+                  <label htmlFor="ct-telegram" className="eyebrow block">
+                    Telegram
                   </label>
                   <input
-                    id="ct-phone"
+                    id="ct-telegram"
                     className="field-input mt-2"
-                    value={phone}
-                    inputMode="tel"
-                    autoComplete="tel"
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+7 900 000 00 00"
+                    value={telegram}
+                    onChange={(e) => setTelegram(e.target.value)}
+                    autoComplete="off"
+                    placeholder="@username"
                   />
-                  {errors.phone ? (
-                    <p className="mt-2 text-xs text-destructive">{errors.phone}</p>
-                  ) : null}
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Необязательно · Например: @ivan_ivanov
+                  </p>
                 </div>
                 <div>
                   <label htmlFor="ct-message" className="eyebrow block">

@@ -281,6 +281,7 @@ birthdays, corporate gifts, and personal milestones. Target audience: men and wo
 brands (Aésop, Byredo aesthetic) — calm, spacious, editorial, never "salesy."
 
 VISUAL STYLE
+
 - Minimalist, elegant, premium, lots of white space
 - Color palette: deep black (#12100E), warm beige (#EDE4D6), cream (#F7F3EC),
   gold accents (#C9A15D), natural tones
@@ -335,6 +336,7 @@ PAGES TO BUILD
    - Social media links
 
 GLOBAL ELEMENTS
+
 - Sticky header, centered logo, minimal nav, transparent on hero /
   solid on scroll
 - Footer with contact info, social links, legal info
@@ -344,6 +346,7 @@ GLOBAL ELEMENTS
 AI CONSULTANT (CHAT WIDGET)
 Build a floating chat widget that opens a slide-in panel (right side on
 desktop, full-screen on mobile). Conversation flow:
+
 1. Greeting: "Hi! I'll help you find the perfect bouquet. Who is it for
    and what's the occasion?"
 2. The assistant asks step-by-step (not all at once, conversationally):
@@ -354,8 +357,8 @@ desktop, full-screen on mobile). Conversation flow:
    photo, name, price, and a short reason for the match
 4. Each suggestion has an "Order this bouquet" button that opens the order
    form pre-filled with the selection
-Tone: warm, like a personal florist concierge — short messages, no emojis,
-no corporate/salesy language.
+   Tone: warm, like a personal florist concierge — short messages, no emojis,
+   no corporate/salesy language.
 
 FORMS & AUTOMATION READINESS
 All order forms (catalog, bespoke, AI consultant, contact) should collect:
@@ -366,6 +369,7 @@ without redesigning the UI — use a single reusable form-submission handler
 function that can be pointed at an external endpoint.
 
 TECHNICAL REQUIREMENTS
+
 - React + Tailwind CSS
 - Reusable components: Header, Hero, ProductCard, ProductModal, FilterBar,
   OrderForm, AIChatWidget, TestimonialSlider, Footer

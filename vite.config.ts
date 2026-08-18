@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    // Expose SITE_URL to SSR head(), client hydration, and build scripts via import.meta.env.
+    envPrefix: ["VITE_", "SITE_"],
+  },
 });

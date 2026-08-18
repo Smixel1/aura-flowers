@@ -6,3 +6,6 @@ pnpm-lock.yaml
 package-lock.json
 bun.lock
 routeTree.gen.ts
+
+# SQL files — no Prettier parser; lint/format via SQL tools if needed later.
+**/*.sql

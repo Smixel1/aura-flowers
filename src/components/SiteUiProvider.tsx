@@ -43,7 +43,12 @@ export function SiteUiProvider({ children }: { children: ReactNode }) {
         className="max-w-2xl"
       >
         <div className="px-6 py-12 sm:px-12">
-          {order ? <OrderForm prefill={order} /> : null}
+          {order ? (
+            <OrderForm
+              key={`${order.source}-${order.bouquet ?? ""}-${order.composition ?? ""}-${order.total ?? ""}`}
+              prefill={order}
+            />
+          ) : null}
         </div>
       </Modal>
     </SiteUiContext.Provider>

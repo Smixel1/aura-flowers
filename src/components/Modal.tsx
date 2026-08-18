@@ -44,7 +44,7 @@ export function Modal({
         aria-modal="true"
         aria-label={label}
         className={cn(
-          "relative z-10 w-full max-w-3xl bg-background shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500",
+          "relative z-10 max-h-[92svh] w-full max-w-3xl overflow-y-auto bg-background shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500",
           className,
         )}
       >

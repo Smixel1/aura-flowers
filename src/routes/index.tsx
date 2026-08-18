@@ -7,24 +7,18 @@ import { ProductModal } from "@/components/ProductModal";
 import { TestimonialSlider } from "@/components/TestimonialSlider";
 import { DeliverySection } from "@/components/DeliverySection";
 import { useSiteUi } from "@/components/SiteUiProvider";
-import { bouquets, type Bouquet } from "@/data/bouquets";
+import { formatPrice, staticBouquets, type Bouquet } from "@/data/bouquets";
+import { buildPageMeta } from "@/lib/seo-meta";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "LUNA FLOWERS — авторские букеты для важных моментов" },
-      {
-        name: "description",
-        content:
-          "Премиальная флористика LUNA FLOWERS: авторские букеты, свежесть с аукциона, доставка день в день и подбор композиции вместе с AI-флористом.",
-      },
-      { property: "og:title", content: "LUNA FLOWERS — авторские букеты для важных моментов" },
-      {
-        property: "og:description",
-        content: "Цветы, которые говорят то, что не успевают сказать слова.",
-      },
-    ],
-  }),
+  head: () =>
+    buildPageMeta({
+      title: "LUNA FLOWERS — авторские букеты для важных моментов",
+      description:
+        "Премиальная флористика LUNA FLOWERS: авторские букеты, свежесть с аукциона, доставка день в день и подбор композиции вместе с AI-флористом.",
+      ogDescription: "Цветы, которые говорят то, что не успевают сказать слова.",
+      path: "/",
+    }),
   component: Home,
 });
 
@@ -44,7 +38,9 @@ const benefits = [
   {
     title: "Доставка",
     text: "Бережная доставка день в день по городу",
-    icon: <path d="M3 16V7h11v9M14 10h4l3 3v3h-7M6.5 19a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Zm11 0a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z" />,
+    icon: (
+      <path d="M3 16V7h11v9M14 10h4l3 3v3h-7M6.5 19a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Zm11 0a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z" />
+    ),
   },
   {
     title: "Индивидуальность",
@@ -54,6 +50,7 @@ const benefits = [
 ];
 
 function Home() {
+  const bouquets = staticBouquets;
   const { openOrder, openChat } = useSiteUi();
   const [active, setActive] = useState<Bouquet | null>(null);
   const featuredIds = [
@@ -71,13 +68,15 @@ function Home() {
   return (
     <>
       <section className="relative flex min-h-[100svh] items-end overflow-hidden">
-        <img
-          src={heroImage}
-          alt="Кремовый букет из садовых роз в тёплом свете студии"
-          width={1920}
-          height={1200}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+        <div className="hero-photo-wrap">
+          <img
+            src={heroImage}
+            alt="Кремовый букет из садовых роз в тёплом свете студии"
+            width={1920}
+            height={1200}
+            className="hero-photo"
+          />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/45 to-ink/25" />
         <div className="relative mx-auto w-full max-w-[1400px] px-6 pb-20 pt-36 sm:pb-24 lg:px-12 lg:pb-32">
           <div className="max-w-2xl">
@@ -98,23 +97,30 @@ function Home() {
               </p>
             </Reveal>
             <Reveal delay={360}>
-              <div className="mt-10 flex flex-col gap-4 sm:mt-12 sm:flex-row sm:items-center">
-                <Link to="/shop" className="btn-gold w-full sm:w-auto">
+              <div className="mt-10 flex flex-col gap-4 sm:mt-12">
+                <Link to="/shop" className="btn-gold w-full sm:w-auto sm:self-start">
                   Выбрать букет
                 </Link>
-                <button
-                  type="button"
-                  onClick={openChat}
-                  className="link-underline w-full text-[0.7rem] uppercase tracking-[0.22em] text-ink-foreground/80 sm:w-auto"
-                >
-                  Не знаете, что выбрать?
-                </button>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+                  <Link
+                    to="/bespoke"
+                    className="link-underline text-[0.7rem] uppercase tracking-[0.22em] text-ink-foreground/80"
+                  >
+                    Собрать примерный состав
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={openChat}
+                    className="link-underline text-left text-[0.7rem] uppercase tracking-[0.22em] text-ink-foreground/80 sm:text-center"
+                  >
+                    Не знаете, что выбрать?
+                  </button>
+                </div>
               </div>
             </Reveal>
           </div>
         </div>
       </section>
-
 
       <section className="mx-auto max-w-[1400px] px-6 py-28 lg:px-12 lg:py-36">
         <div className="grid gap-14 sm:grid-cols-2 lg:grid-cols-4">
@@ -160,7 +166,17 @@ function Home() {
                 <ProductCard
                   bouquet={bouquet}
                   onOpen={setActive}
-                  onOrder={(b) => openOrder({ bouquet: b.name, source: "catalog" })}
+                  onOrder={(b) =>
+                    openOrder({
+                      bouquet: b.name,
+                      composition: b.composition.join(", "),
+                      estimatedPrice: formatPrice(b.price),
+                      budget: formatPrice(b.price),
+                      quantity: 1,
+                      total: b.price,
+                      source: "catalog",
+                    })
+                  }
                 />
               </Reveal>
             ))}
@@ -207,10 +223,10 @@ function Home() {
       <section className="border-t border-border py-24 lg:py-32">
         <Reveal className="mx-auto max-w-2xl px-6 text-center">
           <p className="eyebrow">Конструктор</p>
-          <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl">Создайте свой букет</h2>
+          <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl">Собрать примерный состав</h2>
           <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-            Выберите цветок, количество, цвет и упаковку — увидите примерную стоимость до
-            обращения к флористу.
+            Выберите цветок, количество, цвет и упаковку — увидите примерную стоимость до обращения
+            к флористу.
           </p>
           <Link to="/bespoke" className="btn-gold mt-10">
             Собрать букет
@@ -220,13 +236,20 @@ function Home() {
 
       <DeliverySection />
 
-
       <ProductModal
         bouquet={active}
         onClose={() => setActive(null)}
         onOrder={(b) => {
           setActive(null);
-          openOrder({ bouquet: b.name, source: "catalog" });
+          openOrder({
+            bouquet: b.name,
+            composition: b.composition.join(", "),
+            estimatedPrice: formatPrice(b.price),
+            budget: formatPrice(b.price),
+            quantity: 1,
+            total: b.price,
+            source: "catalog",
+          });
         }}
       />
     </>

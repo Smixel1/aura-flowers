@@ -1,0 +1,5 @@
+# Normalize text files to LF in the repo (Windows checkouts stay consistent with Prettier/ESLint).
+* text=auto eol=lf
+
+# Shell/batch scripts keep platform-native endings when needed.
+*.{cmd,bat} text eol=crlf

@@ -1,5 +1,6 @@
 import { Modal } from "@/components/Modal";
 import {
+  badgeLabels,
   colorLabels,
   deliveryFacts,
   formatPrice,
@@ -22,14 +23,21 @@ export function ProductModal({
     <Modal open={bouquet !== null} onClose={onClose} label="Композиция" className="max-w-5xl">
       {bouquet ? (
         <div className="grid md:grid-cols-2">
-          <img
-            src={bouquet.image}
-            alt={bouquet.alt}
-            width={1024}
-            height={1280}
-            loading="lazy"
-            className="aspect-[4/5] w-full object-cover"
-          />
+          <div className="relative">
+            {bouquet.badge ? (
+              <span className="absolute left-4 top-4 z-10 border border-bloom/40 bg-background/90 px-2.5 py-1 text-[0.6rem] uppercase tracking-[0.24em] text-burgundy backdrop-blur-sm">
+                {badgeLabels[bouquet.badge]}
+              </span>
+            ) : null}
+            <img
+              src={bouquet.image}
+              alt={bouquet.alt}
+              width={1024}
+              height={1280}
+              loading="lazy"
+              className="aspect-[4/5] w-full object-cover md:max-h-[min(92svh,820px)]"
+            />
+          </div>
           <div className="flex flex-col justify-center gap-6 px-6 py-10 sm:px-10">
             <div>
               <p className="eyebrow">

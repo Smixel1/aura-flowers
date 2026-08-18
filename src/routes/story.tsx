@@ -1,23 +1,18 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import workshop from "@/assets/workshop.jpg";
 import { Reveal } from "@/components/Reveal";
+import { buildPageMeta, storyOgImage } from "@/lib/seo-meta";
 
 export const Route = createFileRoute("/story")({
-  head: () => ({
-    meta: [
-      { title: "О бренде — LUNA FLOWERS" },
-      {
-        name: "description",
-        content:
-          "История LUNA FLOWERS: мастерская авторской флористики, честность в свежести, уважение к ремеслу и локальные фермеры-партнёры.",
-      },
-      { property: "og:title", content: "О бренде — LUNA FLOWERS" },
-      {
-        property: "og:description",
-        content: "Цветы как язык эмоций: философия и ценности мастерской LUNA FLOWERS.",
-      },
-    ],
-  }),
+  head: () =>
+    buildPageMeta({
+      title: "О бренде — LUNA FLOWERS",
+      description:
+        "История LUNA FLOWERS: мастерская авторской флористики, честность в свежести, уважение к ремеслу и локальные фермеры-партнёры.",
+      ogDescription: "Цветы как язык эмоций: философия и ценности мастерской LUNA FLOWERS.",
+      path: "/story",
+      ogImage: storyOgImage,
+    }),
   component: Story,
 });
 
@@ -42,40 +37,43 @@ const values = [
 
 function Story() {
   return (
-    <div className="pb-32 pt-40 lg:pt-48">
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <Reveal>
-          <p className="eyebrow">О бренде</p>
-          <h1 className="mt-6 max-w-3xl text-5xl leading-[1.15] sm:text-6xl">
-            Всё началось с одного букета, который не смогли купить
-          </h1>
+    <div className="pb-32 pt-28 lg:pt-48">
+      <div>
+        <Reveal className="hidden lg:block">
+          <img
+            src={workshop}
+            alt="Флорист собирает композицию на деревянном столе в мастерской"
+            width={1408}
+            height={1008}
+            loading="lazy"
+            className="h-[60vh] w-full object-cover"
+          />
         </Reveal>
 
-        <Reveal delay={120} className="mt-16 grid gap-12 lg:grid-cols-2">
-          <p className="text-base leading-[1.9] text-foreground/80">
-            В 2014 году основательница LUNA искала цветы для человека, с которым не разговаривала
-            семь лет. Ни один готовый букет не подходил: они были или слишком праздничными, или
-            слишком нейтральными. Пришлось собрать самой — на кухне, из того, что нашлось на рынке.
-            Букет сработал лучше любого письма.
-          </p>
-          <p className="text-base leading-[1.9] text-foreground/80">
-            С тех пор мы собираем цветы именно так: сначала слушаем историю, потом выбираем стебли.
-            Мы называем это «языком эмоций» — и он единственная причина, по которой мастерская
-            существует. Мы отказываемся от акций, распродаж и «букетов дня»: у момента нет скидки.
-          </p>
-        </Reveal>
+        <div className="mx-auto mt-0 w-full max-w-[1400px] px-6 lg:mt-28 lg:px-12">
+          <Reveal>
+            <p className="eyebrow">О бренде</p>
+            <h1 className="mt-6 max-w-3xl text-5xl leading-[1.15] sm:text-6xl">
+              Всё началось с одного букета, который не смогли купить
+            </h1>
+          </Reveal>
+
+          <Reveal delay={120} className="mt-16 grid gap-12 lg:grid-cols-2">
+            <p className="text-base leading-[1.9] text-foreground/80">
+              В 2014 году основательница LUNA искала цветы для человека, с которым не разговаривала
+              семь лет. Ни один готовый букет не подходил: они были или слишком праздничными, или
+              слишком нейтральными. Пришлось собрать самой — на кухне, из того, что нашлось на
+              рынке. Букет сработал лучше любого письма.
+            </p>
+            <p className="text-base leading-[1.9] text-foreground/80">
+              С тех пор мы собираем цветы именно так: сначала слушаем историю, потом выбираем
+              стебли. Мы называем это «языком эмоций» — и он единственная причина, по которой
+              мастерская существует. Мы отказываемся от акций, распродаж и «букетов дня»: у момента
+              нет скидки.
+            </p>
+          </Reveal>
+        </div>
       </div>
-
-      <Reveal className="mt-28">
-        <img
-          src={workshop}
-          alt="Флорист собирает композицию на деревянном столе в мастерской"
-          width={1408}
-          height={1008}
-          loading="lazy"
-          className="h-[60vh] w-full object-cover"
-        />
-      </Reveal>
 
       <div className="mx-auto max-w-[1400px] px-6 py-28 lg:px-12">
         <Reveal>
@@ -91,6 +89,20 @@ function Story() {
             </Reveal>
           ))}
         </div>
+
+        <Reveal delay={160} className="mt-20 max-w-2xl">
+          <p className="text-base leading-[1.9] text-foreground/80">
+            Готовые композиции — в{" "}
+            <Link to="/shop" className="link-underline">
+              каталоге
+            </Link>
+            . Если нужен свой состав —{" "}
+            <Link to="/bespoke" className="link-underline">
+              соберите примерный вариант
+            </Link>
+            : флорист уточнит детали и скорректирует композицию перед сборкой.
+          </p>
+        </Reveal>
       </div>
 
       <section className="bg-ink py-32 text-ink-foreground lg:py-40">

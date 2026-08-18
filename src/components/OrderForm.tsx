@@ -1,22 +1,19 @@
 import { useState, type FormEvent } from "react";
 import { occasionLabels, type Occasion } from "@/data/bouquets";
-import { phonePattern, submitLead, type LeadSource } from "@/lib/submit-lead";
+import { formatTelegram, phonePattern, submitLead, type LeadSource } from "@/lib/submit-lead";
 
 export type OrderPrefill = {
   bouquet?: string;
   occasion?: string;
   budget?: string;
-  wishes?: string;
+  composition?: string;
+  estimatedPrice?: string;
+  quantity?: number;
+  total?: number;
   source: LeadSource;
 };
 
-const budgetOptions = [
-  "До 2 500 ₽",
-  "2 500 — 5 000 ₽",
-  "5 000 — 10 000 ₽",
-  "10 000 — 20 000 ₽",
-  "20 000 ₽ и выше",
-];
+const budgetOptions = ["до 3 000 ₽", "3 000 — 5 000 ₽", "5 000 — 10 000 ₽", "10 000+ ₽"];
 
 export function OrderForm({
   prefill,
@@ -29,11 +26,13 @@ export function OrderForm({
   note?: string;
   onDone?: () => void;
 }) {
+  const fromConstructor = prefill.source === "bespoke";
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [telegram, setTelegram] = useState("");
   const [occasion, setOccasion] = useState(prefill.occasion ?? "");
   const [budget, setBudget] = useState(prefill.budget ?? "");
-  const [wishes, setWishes] = useState(prefill.wishes ?? "");
+  const [comment, setComment] = useState("");
   const [errors, setErrors] = useState<{ name?: string; phone?: string; occasion?: string }>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
@@ -42,19 +41,25 @@ export function OrderForm({
     const next: { name?: string; phone?: string; occasion?: string } = {};
     if (name.trim().length < 2) next.name = "Укажите имя";
     if (!phonePattern.test(phone.trim())) next.phone = "Телефон в формате +7 900 000 00 00";
-    if (!occasion.trim()) next.occasion = "Выберите повод";
+    if (!fromConstructor && !occasion.trim()) next.occasion = "Выберите повод";
     setErrors(next);
     if (Object.keys(next).length) return;
 
     setStatus("sending");
     try {
+      const clientComment = comment.trim();
       await submitLead({
         name: name.trim(),
         phone: phone.trim(),
-        occasion,
-        budget,
-        wishes: wishes.trim(),
-        bouquet: prefill.bouquet,
+        comment: clientComment || undefined,
+        occasion: occasion || undefined,
+        budget: budget || prefill.estimatedPrice,
+        bouquet: fromConstructor && prefill.composition ? prefill.composition : prefill.bouquet,
+        composition: prefill.composition,
+        estimatedPrice: prefill.estimatedPrice,
+        quantity: prefill.quantity ?? 1,
+        total: prefill.total,
+        telegram: formatTelegram(telegram),
         source: prefill.source,
       });
       setStatus("sent");
@@ -79,9 +84,16 @@ export function OrderForm({
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-8">
       <div>
-        <p className="eyebrow">{title}</p>
-        {prefill.bouquet ? (
-          <p className="mt-3 font-display text-2xl">{prefill.bouquet}</p>
+        <p className="eyebrow">{fromConstructor ? "Оставить заявку" : title}</p>
+        {prefill.bouquet ? <p className="mt-3 font-display text-2xl">{prefill.bouquet}</p> : null}
+        {prefill.composition ? (
+          <div className="mt-4 space-y-2 border-l border-bloom/40 pl-4">
+            <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Состав</p>
+            <p className="text-sm leading-relaxed text-foreground/80">{prefill.composition}</p>
+            {prefill.estimatedPrice ? (
+              <p className="text-sm text-gold">≈ {prefill.estimatedPrice}</p>
+            ) : null}
+          </div>
         ) : null}
       </div>
 
@@ -118,65 +130,90 @@ export function OrderForm({
         </div>
       </div>
 
-      <fieldset>
-        <legend className="eyebrow">Повод</legend>
-        <div className="mt-3 flex flex-wrap gap-x-6 gap-y-3">
-          {(Object.keys(occasionLabels) as Occasion[]).map((key) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setOccasion(occasionLabels[key])}
-              className={`text-sm transition-colors ${
-                occasion === occasionLabels[key]
-                  ? "text-gold"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {occasionLabels[key]}
-            </button>
-          ))}
-          <button
-            type="button"
-            onClick={() => setOccasion("Другое")}
-            className={`text-sm transition-colors ${
-              occasion === "Другое" ? "text-gold" : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Другое
-          </button>
-        </div>
-        {errors.occasion ? <p className="mt-2 text-xs text-destructive">{errors.occasion}</p> : null}
-      </fieldset>
+      <div>
+        <label htmlFor="of-telegram" className="eyebrow block">
+          Telegram
+        </label>
+        <input
+          id="of-telegram"
+          className="field-input mt-2"
+          value={telegram}
+          onChange={(e) => setTelegram(e.target.value)}
+          autoComplete="off"
+          placeholder="@username"
+        />
+        <p className="mt-2 text-xs text-muted-foreground">Необязательно · Например: @ivan_ivanov</p>
+      </div>
 
-      <fieldset>
-        <legend className="eyebrow">Бюджет</legend>
-        <div className="mt-3 flex flex-wrap gap-x-6 gap-y-3">
-          {budgetOptions.map((option) => (
+      {!fromConstructor ? (
+        <fieldset>
+          <legend className="eyebrow">Повод</legend>
+          <div className="mt-3 flex flex-wrap gap-x-6 gap-y-3">
+            {(Object.keys(occasionLabels) as Occasion[]).map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setOccasion(occasionLabels[key])}
+                className={`text-sm transition-colors ${
+                  occasion === occasionLabels[key]
+                    ? "text-gold"
+                    : "text-muted-foreground hover:text-bloom"
+                }`}
+              >
+                {occasionLabels[key]}
+              </button>
+            ))}
             <button
-              key={option}
               type="button"
-              onClick={() => setBudget(option)}
+              onClick={() => setOccasion("Другое")}
               className={`text-sm transition-colors ${
-                budget === option ? "text-gold" : "text-muted-foreground hover:text-foreground"
+                occasion === "Другое" ? "text-gold" : "text-muted-foreground hover:text-bloom"
               }`}
             >
-              {option}
+              Другое
             </button>
-          ))}
-        </div>
-      </fieldset>
+          </div>
+          {errors.occasion ? (
+            <p className="mt-2 text-xs text-destructive">{errors.occasion}</p>
+          ) : null}
+        </fieldset>
+      ) : null}
+
+      {!fromConstructor ? (
+        <fieldset>
+          <legend className="eyebrow">Бюджет</legend>
+          <div className="mt-3 flex flex-wrap gap-x-6 gap-y-3">
+            {budgetOptions.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setBudget(option)}
+                className={`text-sm transition-colors ${
+                  budget === option ? "text-gold" : "text-muted-foreground hover:text-bloom"
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+      ) : null}
 
       <div>
-        <label htmlFor="of-wishes" className="eyebrow block">
-          Пожелания
+        <label htmlFor="of-comment" className="eyebrow block">
+          Комментарий
         </label>
         <textarea
-          id="of-wishes"
+          id="of-comment"
           rows={3}
           className="field-input mt-2 resize-none"
-          value={wishes}
-          onChange={(e) => setWishes(e.target.value)}
-          placeholder="Кому, что важно передать, любимые цветы"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          placeholder={
+            fromConstructor
+              ? "Удобное время для звонка, адрес доставки"
+              : "Кому, что важно передать, любимые цветы"
+          }
         />
       </div>
 

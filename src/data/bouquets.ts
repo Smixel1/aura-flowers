@@ -24,6 +24,22 @@ export type Occasion = "date" | "birthday" | "anniversary" | "proposal" | "weddi
 export type Recipient = "love" | "mother" | "friend" | "colleague" | "man";
 export type ColorTag = "white" | "pink" | "red" | "cream" | "lavender" | "mix";
 export type Segment = "accessible" | "mid" | "premium";
+export type BouquetBadge = "hit" | "new" | "seasonal";
+export type CatalogCategory = "for-her" | "for-him" | "special" | "just-because";
+
+export const badgeLabels: Record<BouquetBadge, string> = {
+  hit: "ХИТ",
+  new: "НОВИНКА",
+  seasonal: "СЕЗОННОЕ",
+};
+
+export const catalogCategoryLabels: Record<CatalogCategory | "all", string> = {
+  all: "Все",
+  "for-her": "Для неё",
+  "for-him": "Для него",
+  special: "Особый случай",
+  "just-because": "Просто так",
+};
 
 export const occasionLabels: Record<Occasion, string> = {
   date: "Свидание",
@@ -72,7 +88,24 @@ export type Bouquet = {
   occasions: Occasion[];
   recipients: Recipient[];
   color: ColorTag;
+  badge?: BouquetBadge;
 };
+
+const femaleRecipients: Recipient[] = ["love", "mother", "friend"];
+const specialOccasions: Occasion[] = ["wedding", "proposal", "anniversary", "birthday"];
+
+export function matchesCatalogCategory(
+  bouquet: Bouquet,
+  category: CatalogCategory | "all",
+): boolean {
+  if (category === "all") return true;
+  if (category === "for-him") return bouquet.recipients.includes("man");
+  if (category === "for-her")
+    return bouquet.recipients.some((recipient) => femaleRecipients.includes(recipient));
+  if (category === "special")
+    return bouquet.occasions.some((occasion) => specialOccasions.includes(occasion));
+  return bouquet.occasions.includes("nooccasion");
+}
 
 export const bouquets: Bouquet[] = [
   {
@@ -137,6 +170,7 @@ export const bouquets: Bouquet[] = [
     sizes: ["9 тюльпанов", "15 тюльпанов", "25 тюльпанов"],
     price: 2400,
     segment: "accessible",
+    badge: "seasonal",
     image: bouquet7,
     alt: "Букет из розовых тюльпанов в кремовой бумаге",
     occasions: ["birthday", "nooccasion", "date"],
@@ -154,6 +188,7 @@ export const bouquets: Bouquet[] = [
     sizes: ["S — 45 см", "M — 55 см"],
     price: 3200,
     segment: "accessible",
+    badge: "new",
     image: bouquet18,
     alt: "Микс-букет из альстромерии, маттиолы и розовых роз в крафте",
     occasions: ["birthday", "nooccasion"],
@@ -256,6 +291,7 @@ export const bouquets: Bouquet[] = [
     sizes: ["S — 35 см", "M — 45 см", "L — 60 см"],
     price: 6900,
     segment: "mid",
+    badge: "hit",
     image: bouquet1,
     alt: "Букет из персиковых роз, абрикосового ранункулюса и сухих трав на кремовом фоне",
     occasions: ["date", "birthday", "anniversary"],
@@ -324,6 +360,7 @@ export const bouquets: Bouquet[] = [
     sizes: ["7 пионов", "9 пионов", "15 пионов"],
     price: 11500,
     segment: "premium",
+    badge: "seasonal",
     image: bouquet13,
     alt: "Монобукет из светло-розовых пионов с кремовой лентой",
     occasions: ["date", "birthday", "anniversary", "wedding"],
@@ -336,7 +373,12 @@ export const bouquets: Bouquet[] = [
     tagline: "Разговор, который начинается после заката",
     description:
       "Глубокие бордовые и сливовые тона, тёмная зелень. Букет для тех, кто предпочитает сдержанность и драму вместо очевидной нежности.",
-    composition: ["Роза Black Baccara", "Тюльпан махровый бордовый", "Астранция", "Эвкалипт бэби блю"],
+    composition: [
+      "Роза Black Baccara",
+      "Тюльпан махровый бордовый",
+      "Астранция",
+      "Эвкалипт бэби блю",
+    ],
     size: "Высота около 50 см",
     sizes: ["M — 45 см", "L — 60 см"],
     price: 12400,
@@ -353,11 +395,17 @@ export const bouquets: Bouquet[] = [
     tagline: "Когда объяснять уже поздно",
     description:
       "Красные садовые розы в чёрной бумаге. Прямое высказывание, собранное так, чтобы не выглядеть банальным.",
-    composition: ["Садовая роза Explorer", "Роза Red Naomi", "Тёмная зелень", "Чёрная матовая бумага"],
+    composition: [
+      "Садовая роза Explorer",
+      "Роза Red Naomi",
+      "Тёмная зелень",
+      "Чёрная матовая бумага",
+    ],
     size: "Высота около 60 см",
     sizes: ["M — 45 см", "L — 60 см", "XL — 75 см"],
     price: 13200,
     segment: "premium",
+    badge: "hit",
     image: bouquet6,
     alt: "Букет красных садовых роз в чёрной упаковке на бежевом фоне",
     occasions: ["proposal", "date", "anniversary"],
@@ -434,12 +482,22 @@ export const bouquets: Bouquet[] = [
   },
 ];
 
+/** Static catalog used by the public site. */
+export const staticBouquets = bouquets;
+
+export function getBouquetBySlug(slug: string): Bouquet | undefined {
+  return staticBouquets.find((bouquet) => bouquet.id === slug);
+}
+
+export function getBouquetProductPath(bouquet: Bouquet): `/shop/${string}` {
+  return `/shop/${bouquet.id}`;
+}
+
 export const budgetRanges = [
-  { id: "to-2500", label: "До 2 500 ₽", min: 0, max: 2500 },
-  { id: "2500-5000", label: "2 500 — 5 000 ₽", min: 2500, max: 5000 },
+  { id: "to-3000", label: "до 3 000 ₽", min: 0, max: 3000 },
+  { id: "3000-5000", label: "3 000 — 5 000 ₽", min: 3000, max: 5000 },
   { id: "5000-10000", label: "5 000 — 10 000 ₽", min: 5000, max: 10000 },
-  { id: "10000-20000", label: "10 000 — 20 000 ₽", min: 10000, max: 20000 },
-  { id: "from-20000", label: "20 000 ₽ и выше", min: 20000, max: Infinity },
+  { id: "from-10000", label: "10 000+ ₽", min: 10000, max: Infinity },
 ];
 
 export const formatPrice = (value: number) => `${value.toLocaleString("ru-RU")} ₽`;
@@ -454,5 +512,9 @@ export const deliveryFacts = [
   { title: "Доставка по Москве", value: "от 500 ₽", note: "в пределах ТТК; за МКАД — по расчёту" },
   { title: "Интервал доставки", value: "2 часа", note: "с 09:00 до 22:00, выбираете при заказе" },
   { title: "Срочная доставка", value: "от 90 минут", note: "по наличию курьера, доплата 900 ₽" },
-  { title: "Фото до отправки", value: "по запросу", note: "присылаем в мессенджер на согласование" },
+  {
+    title: "Фото до отправки",
+    value: "по запросу",
+    note: "присылаем в мессенджер на согласование",
+  },
 ];

@@ -81,19 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "LUNA FLOWERS — авторская флористика" },
-      {
-        name: "description",
-        content: "Авторские букеты LUNA FLOWERS для моментов, которые хочется запомнить.",
-      },
       { name: "author", content: "LUNA FLOWERS" },
-      { property: "og:title", content: "LUNA FLOWERS — авторская флористика" },
-      {
-        property: "og:description",
-        content: "Цветы, которые говорят то, что не успевают сказать слова.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
@@ -146,4 +134,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

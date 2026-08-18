@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useSiteUi } from "@/components/SiteUiProvider";
 import {
-  bouquets,
   budgetRanges,
   colorLabels,
   formatPrice,
   occasionLabels,
   recipientLabels,
+  staticBouquets,
   type Bouquet,
   type ColorTag,
   type Occasion,
@@ -93,8 +93,8 @@ function sizeScore(price: number, size?: Answers["size"]) {
   return price > 9000 ? 1 : 0;
 }
 
-function recommend(answers: Answers) {
-  const scored = bouquets.map((bouquet) => {
+function recommend(answers: Answers, catalog: Bouquet[]) {
+  const scored = catalog.map((bouquet) => {
     let score = budgetScore(bouquet.price, answers.budget);
     if (answers.recipient && bouquet.recipients.includes(answers.recipient)) score += 2;
     if (answers.occasion && bouquet.occasions.includes(answers.occasion)) score += 2;
@@ -126,6 +126,7 @@ function buildReason(bouquet: Bouquet, answers: Answers) {
 
 export function AIChatWidget() {
   const { chatOpen, openChat, closeChat, openOrder } = useSiteUi();
+  const catalog = staticBouquets;
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [messages, setMessages] = useState<Message[]>([
@@ -171,7 +172,11 @@ export function AIChatWidget() {
                 role: "assistant",
                 text: "Спасибо. Вот три композиции, которые я бы предложила для этого случая.",
               },
-              { id: `s${prev.length + 1}`, role: "suggestions", items: recommend(nextAnswers) },
+              {
+                id: `s${prev.length + 1}`,
+                role: "suggestions",
+                items: recommend(nextAnswers, catalog),
+              },
             ],
       );
     }, 500);
@@ -265,19 +270,13 @@ export function AIChatWidget() {
                             onClick={() =>
                               openOrder({
                                 bouquet: bouquet.name,
-                                occasion: answers.occasion
-                                  ? occasionLabels[answers.occasion]
-                                  : "",
+                                composition: bouquet.composition.join(", "),
+                                estimatedPrice: formatPrice(bouquet.price),
+                                quantity: 1,
+                                total: bouquet.price,
+                                occasion: answers.occasion ? occasionLabels[answers.occasion] : "",
                                 budget:
                                   budgetRanges.find((r) => r.id === answers.budget)?.label ?? "",
-                                wishes: [
-                                  answers.recipient ? recipientLabels[answers.recipient] : null,
-                                  answers.color && answers.color !== ("any" as ColorTag)
-                                    ? `гамма: ${colorLabels[answers.color]}`
-                                    : null,
-                                ]
-                                  .filter(Boolean)
-                                  .join(", "),
                                 source: "ai",
                               })
                             }
@@ -291,7 +290,10 @@ export function AIChatWidget() {
                 ) : (
                   <div
                     key={message.id}
-                    className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}
+                    className={cn(
+                      "flex",
+                      message.role === "user" ? "justify-end" : "justify-start",
+                    )}
                   >
                     <p
                       className={cn(

@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BespokeRouteImport } from './routes/bespoke'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as ShopRouteImport } from './routes/shop'
+import { Route as ShopRouteRouteImport } from './routes/shop/route'
 import { Route as StoryRouteImport } from './routes/story'
+import { Route as ShopIndexRouteImport } from './routes/shop/index'
+import { Route as ShopSlugRouteImport } from './routes/shop/$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,7 +32,7 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ShopRoute = ShopRouteImport.update({
+const ShopRouteRoute = ShopRouteRouteImport.update({
   id: '/shop',
   path: '/shop',
   getParentRoute: () => rootRouteImport,
@@ -40,42 +42,72 @@ const StoryRoute = StoryRouteImport.update({
   path: '/story',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShopIndexRoute = ShopIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ShopRouteRoute,
+} as any)
+const ShopSlugRoute = ShopSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ShopRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/shop': typeof ShopRouteRouteWithChildren
   '/bespoke': typeof BespokeRoute
   '/contact': typeof ContactRoute
-  '/shop': typeof ShopRoute
   '/story': typeof StoryRoute
+  '/shop/$slug': typeof ShopSlugRoute
+  '/shop/': typeof ShopIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bespoke': typeof BespokeRoute
   '/contact': typeof ContactRoute
-  '/shop': typeof ShopRoute
   '/story': typeof StoryRoute
+  '/shop/$slug': typeof ShopSlugRoute
+  '/shop': typeof ShopIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/shop': typeof ShopRouteRouteWithChildren
   '/bespoke': typeof BespokeRoute
   '/contact': typeof ContactRoute
-  '/shop': typeof ShopRoute
   '/story': typeof StoryRoute
+  '/shop/$slug': typeof ShopSlugRoute
+  '/shop/': typeof ShopIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bespoke' | '/contact' | '/shop' | '/story'
+  fullPaths:
+    | '/'
+    | '/shop'
+    | '/bespoke'
+    | '/contact'
+    | '/story'
+    | '/shop/$slug'
+    | '/shop/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bespoke' | '/contact' | '/shop' | '/story'
-  id: '__root__' | '/' | '/bespoke' | '/contact' | '/shop' | '/story'
+  to: '/' | '/bespoke' | '/contact' | '/story' | '/shop/$slug' | '/shop'
+  id:
+    | '__root__'
+    | '/'
+    | '/shop'
+    | '/bespoke'
+    | '/contact'
+    | '/story'
+    | '/shop/$slug'
+    | '/shop/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ShopRouteRoute: typeof ShopRouteRouteWithChildren
   BespokeRoute: typeof BespokeRoute
   ContactRoute: typeof ContactRoute
-  ShopRoute: typeof ShopRoute
   StoryRoute: typeof StoryRoute
 }
 
@@ -106,7 +138,7 @@ declare module '@tanstack/react-router' {
       id: '/shop'
       path: '/shop'
       fullPath: '/shop'
-      preLoaderRoute: typeof ShopRouteImport
+      preLoaderRoute: typeof ShopRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/story': {
@@ -116,16 +148,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shop/': {
+      id: '/shop/'
+      path: '/'
+      fullPath: '/shop/'
+      preLoaderRoute: typeof ShopIndexRouteImport
+      parentRoute: typeof ShopRouteRoute
+    }
+    '/shop/$slug': {
+      id: '/shop/$slug'
+      path: '/$slug'
+      fullPath: '/shop/$slug'
+      preLoaderRoute: typeof ShopSlugRouteImport
+      parentRoute: typeof ShopRouteRoute
+    }
   }
 }
 
+interface ShopRouteRouteChildren {
+  ShopSlugRoute: typeof ShopSlugRoute
+  ShopIndexRoute: typeof ShopIndexRoute
+}
+
+const ShopRouteRouteChildren: ShopRouteRouteChildren = {
+  ShopSlugRoute: ShopSlugRoute,
+  ShopIndexRoute: ShopIndexRoute,
+}
+
+const ShopRouteRouteWithChildren = ShopRouteRoute._addFileChildren(
+  ShopRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ShopRouteRoute: ShopRouteRouteWithChildren,
   BespokeRoute: BespokeRoute,
   ContactRoute: ContactRoute,
-  ShopRoute: ShopRoute,
   StoryRoute: StoryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
