@@ -3,16 +3,21 @@ import { useState, type FormEvent } from "react";
 import { Reveal } from "@/components/Reveal";
 import { formatTelegram, phonePattern, submitLead } from "@/lib/submit-lead";
 import { buildPageMeta } from "@/lib/seo-meta";
+import { buildFloristJsonLd, jsonLdScript } from "@/lib/site-schema";
+import { HoneypotField } from "@/components/HoneypotField";
+import { FIELD_LIMITS, isBotSubmission } from "@/lib/form-guards";
 
 export const Route = createFileRoute("/contact")({
-  head: () =>
-    buildPageMeta({
+  head: () => ({
+    ...buildPageMeta({
       title: "Контакты — LUNA FLOWERS",
       description:
         "Мастерская LUNA FLOWERS: Большая Никитская 12, ежедневно 09:00–21:00. Телефон, WhatsApp, Telegram и форма быстрой связи.",
       ogDescription: "Приходите в мастерскую или напишите — ответим в течение двух часов.",
       path: "/contact",
     }),
+    scripts: [jsonLdScript(buildFloristJsonLd())],
+  }),
   component: Contact,
 });
 
@@ -21,6 +26,7 @@ function Contact() {
   const [phone, setPhone] = useState("");
   const [telegram, setTelegram] = useState("");
   const [message, setMessage] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
@@ -31,6 +37,10 @@ function Contact() {
     if (!phonePattern.test(phone.trim())) next.phone = "Телефон в формате +7 900 000 00 00";
     setErrors(next);
     if (Object.keys(next).length) return;
+    if (isBotSubmission(honeypot)) {
+      setStatus("sent");
+      return;
+    }
 
     setStatus("sending");
     try {
@@ -74,11 +84,11 @@ function Contact() {
                   </a>
                 </li>
                 <li>
-                  <a href="https://wa.me/74950000000" className="link-underline">
+                  <a href="https://wa.me/74950000000" className="link-underline" rel="noopener noreferrer">
                     WhatsApp
                   </a>
                   <span className="px-3 text-muted-foreground">·</span>
-                  <a href="https://t.me" className="link-underline">
+                  <a href="https://t.me" className="link-underline" rel="noopener noreferrer">
                     Telegram
                   </a>
                 </li>
@@ -93,13 +103,13 @@ function Contact() {
             <div>
               <p className="eyebrow">Социальные сети</p>
               <div className="mt-4 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-                <a href="https://instagram.com" className="link-underline">
+                <a href="https://instagram.com" className="link-underline" rel="noopener noreferrer">
                   Instagram
                 </a>
-                <a href="https://pinterest.com" className="link-underline">
+                <a href="https://pinterest.com" className="link-underline" rel="noopener noreferrer">
                   Pinterest
                 </a>
-                <a href="https://t.me" className="link-underline">
+                <a href="https://t.me" className="link-underline" rel="noopener noreferrer">
                   Telegram-канал
                 </a>
               </div>
@@ -119,8 +129,9 @@ function Contact() {
               <form
                 onSubmit={handleSubmit}
                 noValidate
-                className="space-y-10 border border-border p-8 sm:p-12"
+                className="relative space-y-10 border border-border p-8 sm:p-12"
               >
+                <HoneypotField id="ct-honeypot" value={honeypot} onChange={setHoneypot} />
                 <p className="eyebrow">Быстрая связь</p>
                 <div className="grid gap-8 sm:grid-cols-2">
                   <div>
@@ -131,6 +142,7 @@ function Contact() {
                       id="ct-name"
                       className="field-input mt-2"
                       value={name}
+                      maxLength={FIELD_LIMITS.name}
                       autoComplete="name"
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Как к вам обращаться"
@@ -147,6 +159,7 @@ function Contact() {
                       id="ct-phone"
                       className="field-input mt-2"
                       value={phone}
+                      maxLength={FIELD_LIMITS.phone}
                       inputMode="tel"
                       autoComplete="tel"
                       onChange={(e) => setPhone(e.target.value)}
@@ -165,6 +178,7 @@ function Contact() {
                     id="ct-telegram"
                     className="field-input mt-2"
                     value={telegram}
+                    maxLength={FIELD_LIMITS.telegram}
                     onChange={(e) => setTelegram(e.target.value)}
                     autoComplete="off"
                     placeholder="@username"
@@ -182,6 +196,7 @@ function Contact() {
                     rows={4}
                     className="field-input mt-2 resize-none"
                     value={message}
+                    maxLength={FIELD_LIMITS.message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Чем можем помочь"
                   />

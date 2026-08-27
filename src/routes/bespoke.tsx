@@ -6,6 +6,8 @@ import { formatTelegram, phonePattern, submitLead } from "@/lib/submit-lead";
 import { formatPrice } from "@/data/bouquets";
 import type { ConstructorSnapshot } from "@/data/constructor";
 import { buildPageMeta } from "@/lib/seo-meta";
+import { HoneypotField } from "@/components/HoneypotField";
+import { FIELD_LIMITS, isBotSubmission } from "@/lib/form-guards";
 
 export const Route = createFileRoute("/bespoke")({
   head: () =>
@@ -28,6 +30,7 @@ function Bespoke() {
   const [occasion, setOccasion] = useState("");
   const [budget, setBudget] = useState(30000);
   const [comment, setComment] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [constructorSnapshot, setConstructorSnapshot] = useState<ConstructorSnapshot | null>(null);
   const [errors, setErrors] = useState<{ name?: string; phone?: string; occasion?: string }>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -44,6 +47,10 @@ function Bespoke() {
     if (!occasion) next.occasion = "Выберите повод";
     setErrors(next);
     if (Object.keys(next).length) return;
+    if (isBotSubmission(honeypot)) {
+      setStatus("sent");
+      return;
+    }
 
     setStatus("sending");
     try {
@@ -101,8 +108,9 @@ function Bespoke() {
               <form
                 onSubmit={handleSubmit}
                 noValidate
-                className="space-y-10 border border-border p-8 sm:p-12"
+                className="relative space-y-10 border border-border p-8 sm:p-12"
               >
+                <HoneypotField id="bs-honeypot" value={honeypot} onChange={setHoneypot} />
                 <div className="grid gap-8 sm:grid-cols-2">
                   <div>
                     <label htmlFor="bs-name" className="eyebrow block">
@@ -112,6 +120,7 @@ function Bespoke() {
                       id="bs-name"
                       className="field-input mt-2"
                       value={name}
+                      maxLength={FIELD_LIMITS.name}
                       autoComplete="name"
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Как к вам обращаться"
@@ -129,6 +138,7 @@ function Bespoke() {
                       id="bs-phone"
                       className="field-input mt-2"
                       value={phone}
+                      maxLength={FIELD_LIMITS.phone}
                       inputMode="tel"
                       autoComplete="tel"
                       onChange={(e) => setPhone(e.target.value)}
@@ -148,6 +158,7 @@ function Bespoke() {
                     id="bs-telegram"
                     className="field-input mt-2"
                     value={telegram}
+                    maxLength={FIELD_LIMITS.telegram}
                     onChange={(e) => setTelegram(e.target.value)}
                     autoComplete="off"
                     placeholder="@username"
@@ -209,6 +220,7 @@ function Bespoke() {
                     rows={4}
                     className="field-input mt-2 resize-none"
                     value={comment}
+                    maxLength={FIELD_LIMITS.comment}
                     onChange={(e) => setComment(e.target.value)}
                     placeholder="Дата, площадка, палитра, что важно передать"
                   />

@@ -9,16 +9,19 @@ import { DeliverySection } from "@/components/DeliverySection";
 import { useSiteUi } from "@/components/SiteUiProvider";
 import { formatPrice, staticBouquets, type Bouquet } from "@/data/bouquets";
 import { buildPageMeta } from "@/lib/seo-meta";
+import { buildOrganizationJsonLd, jsonLdScript } from "@/lib/site-schema";
 
 export const Route = createFileRoute("/")({
-  head: () =>
-    buildPageMeta({
+  head: () => ({
+    ...buildPageMeta({
       title: "LUNA FLOWERS — авторские букеты для важных моментов",
       description:
         "Премиальная флористика LUNA FLOWERS: авторские букеты, свежесть с аукциона, доставка день в день и подбор композиции вместе с AI-флористом.",
       ogDescription: "Цветы, которые говорят то, что не успевают сказать слова.",
       path: "/",
     }),
+    scripts: [jsonLdScript(buildOrganizationJsonLd())],
+  }),
   component: Home,
 });
 

@@ -15,16 +15,19 @@ import {
 } from "@/data/bouquets";
 import { cn } from "@/lib/utils";
 import { buildPageMeta } from "@/lib/seo-meta";
+import { buildCatalogItemListJsonLd, jsonLdScript } from "@/lib/site-schema";
 
 export const Route = createFileRoute("/shop/")({
-  head: () =>
-    buildPageMeta({
+  head: () => ({
+    ...buildPageMeta({
       title: "Каталог букетов — LUNA FLOWERS",
       description:
         "Более 20 авторских букетов LUNA FLOWERS от 1 500 ₽: свидание, день рождения, годовщина, свадьба. Фильтры по поводу, получателю, бюджету и цвету.",
       ogDescription: "Композиции сезона: от повседневных букетов до премиальных композиций.",
       path: "/shop",
     }),
+    scripts: [jsonLdScript(buildCatalogItemListJsonLd())],
+  }),
   component: Shop,
 });
 

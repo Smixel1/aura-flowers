@@ -32,6 +32,7 @@ export const Route = createFileRoute("/shop/$slug")({
         description: bouquet.description,
         path,
         ogImage: bouquet.image,
+        ogType: "product",
       }),
       scripts: [productJsonLdScript(bouquet)],
     };

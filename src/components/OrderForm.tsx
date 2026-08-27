@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { occasionLabels, type Occasion } from "@/data/bouquets";
 import { formatTelegram, phonePattern, submitLead, type LeadSource } from "@/lib/submit-lead";
+import { HoneypotField } from "@/components/HoneypotField";
+import { FIELD_LIMITS, isBotSubmission } from "@/lib/form-guards";
 
 export type OrderPrefill = {
   bouquet?: string;
@@ -33,6 +35,7 @@ export function OrderForm({
   const [occasion, setOccasion] = useState(prefill.occasion ?? "");
   const [budget, setBudget] = useState(prefill.budget ?? "");
   const [comment, setComment] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [errors, setErrors] = useState<{ name?: string; phone?: string; occasion?: string }>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
@@ -44,6 +47,11 @@ export function OrderForm({
     if (!fromConstructor && !occasion.trim()) next.occasion = "Выберите повод";
     setErrors(next);
     if (Object.keys(next).length) return;
+    if (isBotSubmission(honeypot)) {
+      setStatus("sent");
+      onDone?.();
+      return;
+    }
 
     setStatus("sending");
     try {
@@ -82,7 +90,8 @@ export function OrderForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-8">
+    <form onSubmit={handleSubmit} noValidate className="relative space-y-8">
+      <HoneypotField id="of-honeypot" value={honeypot} onChange={setHoneypot} />
       <div>
         <p className="eyebrow">{fromConstructor ? "Оставить заявку" : title}</p>
         {prefill.bouquet ? <p className="mt-3 font-display text-2xl">{prefill.bouquet}</p> : null}
@@ -106,6 +115,7 @@ export function OrderForm({
             id="of-name"
             className="field-input mt-2"
             value={name}
+            maxLength={FIELD_LIMITS.name}
             onChange={(e) => setName(e.target.value)}
             autoComplete="name"
             placeholder="Как к вам обращаться"
@@ -121,6 +131,7 @@ export function OrderForm({
             id="of-phone"
             className="field-input mt-2"
             value={phone}
+            maxLength={FIELD_LIMITS.phone}
             onChange={(e) => setPhone(e.target.value)}
             inputMode="tel"
             autoComplete="tel"
@@ -138,6 +149,7 @@ export function OrderForm({
           id="of-telegram"
           className="field-input mt-2"
           value={telegram}
+          maxLength={FIELD_LIMITS.telegram}
           onChange={(e) => setTelegram(e.target.value)}
           autoComplete="off"
           placeholder="@username"
@@ -208,6 +220,7 @@ export function OrderForm({
           rows={3}
           className="field-input mt-2 resize-none"
           value={comment}
+          maxLength={FIELD_LIMITS.comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder={
             fromConstructor

@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-ink-foreground">
+    <footer className="border-t border-gold/15 bg-ink text-ink-foreground">
       <div className="mx-auto max-w-[1400px] px-6 py-20 lg:px-12">
         <div className="grid gap-14 md:grid-cols-4">
           <div>
@@ -61,22 +61,22 @@ export function Footer() {
             <p className="text-[0.65rem] uppercase tracking-[0.28em] text-gold">Социальные сети</p>
             <ul className="mt-6 space-y-3 text-sm text-ink-foreground/70">
               <li>
-                <a href="https://instagram.com" className="link-underline">
+                <a href="https://instagram.com" className="link-underline" rel="noopener noreferrer">
                   Instagram
                 </a>
               </li>
               <li>
-                <a href="https://t.me" className="link-underline">
+                <a href="https://t.me" className="link-underline" rel="noopener noreferrer">
                   Telegram
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/74950000000" className="link-underline">
+                <a href="https://wa.me/74950000000" className="link-underline" rel="noopener noreferrer">
                   WhatsApp
                 </a>
               </li>
               <li>
-                <a href="https://pinterest.com" className="link-underline">
+                <a href="https://pinterest.com" className="link-underline" rel="noopener noreferrer">
                   Pinterest
                 </a>
               </li>

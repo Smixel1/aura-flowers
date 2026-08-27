@@ -1,3 +1,5 @@
+import { FIELD_LIMITS } from "@/lib/form-guards";
+
 export type LeadSource = "catalog" | "bespoke" | "ai" | "contact";
 
 export type Lead = {
@@ -22,6 +24,7 @@ export type Lead = {
  * Without it, leads are logged locally in the browser console.
  */
 export async function submitLead(lead: Omit<Lead, "createdAt">): Promise<void> {
+  validateLeadInput(lead);
   const payload = buildLeadPayload(lead);
   const endpoint = import.meta.env["VITE_LEAD_WEBHOOK_URL"] as string | undefined;
 
@@ -68,15 +71,15 @@ export function formatTelegram(value: string): string | undefined {
 /** Ensures optional lead fields are included in the webhook JSON when present. */
 export function buildLeadPayload(lead: Omit<Lead, "createdAt">): Lead {
   const payload: Lead = {
-    name: lead.name,
-    phone: lead.phone,
+    name: truncate(lead.name.trim(), FIELD_LIMITS.name),
+    phone: truncate(lead.phone.trim(), FIELD_LIMITS.phone),
     source: lead.source,
     createdAt: new Date().toISOString(),
   };
 
   const clientComment = lead.comment?.trim();
-  if (clientComment) payload.comment = clientComment;
-  if (lead.telegram) payload.telegram = lead.telegram;
+  if (clientComment) payload.comment = truncate(clientComment, FIELD_LIMITS.comment);
+  if (lead.telegram) payload.telegram = truncate(lead.telegram, FIELD_LIMITS.telegram);
   if (lead.occasion) payload.occasion = lead.occasion;
   if (lead.budget) payload.budget = lead.budget;
   if (lead.bouquet) payload.bouquet = lead.bouquet;
@@ -86,4 +89,17 @@ export function buildLeadPayload(lead: Omit<Lead, "createdAt">): Lead {
   if (lead.total != null) payload.total = lead.total;
 
   return payload;
+}
+
+function truncate(value: string, max: number): string {
+  return value.length > max ? value.slice(0, max) : value;
+}
+
+function validateLeadInput(lead: Omit<Lead, "createdAt">): void {
+  if (lead.name.trim().length < 2) throw new Error("Invalid name");
+  if (!phonePattern.test(lead.phone.trim())) throw new Error("Invalid phone");
+  if (lead.name.trim().length > FIELD_LIMITS.name) throw new Error("Name too long");
+  if (lead.phone.trim().length > FIELD_LIMITS.phone) throw new Error("Phone too long");
+  if (lead.telegram && lead.telegram.length > FIELD_LIMITS.telegram) throw new Error("Telegram too long");
+  if (lead.comment && lead.comment.trim().length > FIELD_LIMITS.comment) throw new Error("Comment too long");
 }

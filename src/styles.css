@@ -189,7 +189,8 @@
   transition:
     background-color 450ms ease,
     color 450ms ease,
-    border-color 450ms ease;
+    border-color 450ms ease,
+    transform 150ms ease;
   cursor: pointer;
 
   &:hover {
@@ -201,6 +202,10 @@
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.985);
   }
 }
 
@@ -325,11 +330,13 @@
   shrink: 0;
   white-space: nowrap;
   border-bottom: 1px solid transparent;
-  padding-bottom: 2px;
+  padding: 0.375rem 0.75rem;
+  margin: -0.375rem -0.75rem;
   font-size: 0.875rem;
   transition:
     color 450ms ease,
-    border-color 450ms ease;
+    border-color 450ms ease,
+    background-color 450ms ease;
   cursor: pointer;
 
   &:hover {
@@ -340,6 +347,7 @@
 @utility filter-pill-active {
   color: var(--color-gold);
   border-bottom-color: var(--color-bloom);
+  background-color: oklch(0.926 0.021 82 / 70%);
 }
 
 @utility product-card-accent {
@@ -354,4 +362,14 @@
 
 .group:hover .product-card-accent {
   width: 100%;
+}
+
+@utility product-card-media {
+  transition:
+    box-shadow 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .product-card-media {
+  box-shadow: 0 28px 56px -32px oklch(0.222 0.009 60 / 16%);
 }

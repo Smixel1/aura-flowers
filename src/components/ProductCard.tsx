@@ -28,7 +28,7 @@ export function ProductCard({
         params={{ slug: bouquet.id }}
         onClick={(event) => openModalFromLink(event, () => onOpen(bouquet))}
         aria-label={`Открыть композицию «${bouquet.name}»`}
-        className="relative block w-full overflow-hidden bg-secondary"
+        className="product-card-media relative block w-full overflow-hidden bg-secondary"
       >
         <span aria-hidden="true" className="product-card-accent" />
         {bouquet.badge ? (
@@ -55,12 +55,12 @@ export function ProductCard({
         >
           {bouquet.name}
         </Link>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{bouquet.tagline}</p>
+        <p className="mt-2 text-sm italic leading-relaxed text-muted-foreground">{bouquet.tagline}</p>
         {compositionPreview ? (
           <p className="mt-3 text-xs leading-relaxed text-foreground/55">{compositionPreview}</p>
         ) : null}
         <div className="mt-auto flex items-end justify-between gap-4 border-t border-border pt-5">
-          <span className="text-sm tracking-wide">{formatPrice(bouquet.price)}</span>
+          <span className="font-display text-xl tracking-wide">{formatPrice(bouquet.price)}</span>
           <div className="flex flex-col items-end gap-2 sm:flex-row sm:items-center sm:gap-5">
             <Link
               to="/shop/$slug"
