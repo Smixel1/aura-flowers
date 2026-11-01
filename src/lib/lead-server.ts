@@ -39,7 +39,9 @@ const limits = new Map<string, { count: number; resetAt: number }>();
 
 /** Best-effort local limit; configure a shared edge limit for multiple instances. */
 export async function localLeadLimit(request: Request): Promise<boolean> {
-  const address = request.headers.get("cf-connecting-ip");
+  const address = process.env["VERCEL"]
+    ? request.headers.get("x-vercel-forwarded-for")
+    : request.headers.get("cf-connecting-ip");
   if (!address) return true;
 
   const now = Date.now();
