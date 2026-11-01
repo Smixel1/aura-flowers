@@ -4,7 +4,6 @@ import heroImage from "@/assets/hero.jpg";
 import { Reveal } from "@/components/Reveal";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductModal } from "@/components/ProductModal";
-import { TestimonialSlider } from "@/components/TestimonialSlider";
 import { DeliverySection } from "@/components/DeliverySection";
 import { useSiteUi } from "@/components/SiteUiProvider";
 import { formatPrice, staticBouquets, type Bouquet } from "@/data/bouquets";
@@ -15,8 +14,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     ...buildPageMeta({
       title: "LUNA FLOWERS — авторские букеты для важных моментов",
-      description:
-        "Премиальная флористика LUNA FLOWERS: авторские букеты, свежесть с аукциона, доставка день в день и подбор композиции вместе с AI-флористом.",
+      description: "Каталог букетов LUNA FLOWERS и подбор композиции под ваш повод и бюджет.",
       ogDescription: "Цветы, которые говорят то, что не успевают сказать слова.",
       path: "/",
     }),
@@ -28,7 +26,7 @@ export const Route = createFileRoute("/")({
 const benefits = [
   {
     title: "Свежесть",
-    text: "Цветы приезжают с аукциона за 24 часа до сборки",
+    text: "Подбираем цветы и оттенки для каждой композиции",
     icon: (
       <path d="M12 3c3 3.2 4.6 6 4.6 8.6A4.6 4.6 0 0 1 12 16a4.6 4.6 0 0 1-4.6-4.4C7.4 9 9 6.2 12 3ZM12 16v5" />
     ),
@@ -40,7 +38,7 @@ const benefits = [
   },
   {
     title: "Доставка",
-    text: "Бережная доставка день в день по городу",
+    text: "Стоимость и время доставки уточняем при оформлении",
     icon: (
       <path d="M3 16V7h11v9M14 10h4l3 3v3h-7M6.5 19a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Zm11 0a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z" />
     ),
@@ -85,7 +83,7 @@ function Home() {
           <div className="max-w-2xl">
             <Reveal>
               <p className="text-[0.65rem] uppercase tracking-[0.4em] text-gold">
-                Цветочный бутик в Москве · с 2014
+                Авторская флористика
               </p>
             </Reveal>
             <Reveal delay={120}>
@@ -95,8 +93,8 @@ function Home() {
             </Reveal>
             <Reveal delay={240}>
               <p className="mt-6 max-w-lg text-base leading-relaxed text-ink-foreground/80 sm:mt-8">
-                Букеты от 1 500 ₽ и авторские композиции ручной сборки. Доставим по Москве в
-                выбранный двухчасовой интервал и пришлём фото букета на согласование.
+                Букеты от 1 500 ₽ и композиции под ваш повод и бюджет. Детали заказа и доставки
+                уточним после заявки.
               </p>
             </Reveal>
             <Reveal delay={360}>
@@ -153,7 +151,7 @@ function Home() {
           <Reveal className="flex flex-wrap items-end justify-between gap-6">
             <div>
               <p className="eyebrow">Избранное</p>
-              <h2 className="mt-4 text-4xl sm:text-5xl">Композиции сезона</h2>
+              <h2 className="mt-4 text-4xl sm:text-5xl">Подборка букетов</h2>
             </div>
             <Link
               to="/shop"
@@ -198,14 +196,8 @@ function Home() {
             to="/story"
             className="link-underline mt-12 inline-block text-[0.7rem] uppercase tracking-[0.22em] text-gold"
           >
-            Узнать историю бренда
+            О нашем подходе
           </Link>
-        </Reveal>
-      </section>
-
-      <section className="py-28 lg:py-36">
-        <Reveal className="mx-auto max-w-[1400px] px-6 lg:px-12">
-          <TestimonialSlider />
         </Reveal>
       </section>
 

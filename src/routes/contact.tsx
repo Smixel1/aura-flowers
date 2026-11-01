@@ -160,22 +160,15 @@ function Contact() {
                   {status === "sending" ? "Отправляем" : "Отправить"}
                 </button>
                 {status === "error" ? (
-                  <p className="text-xs text-destructive">Не удалось отправить. Позвоните нам.</p>
+                  <p className="text-xs text-destructive">
+                    Не удалось отправить заявку. Попробуйте ещё раз позже.
+                  </p>
                 ) : null}
               </form>
             )}
           </Reveal>
         </div>
       </div>
-
-      <Reveal className="mt-28">
-        <iframe
-          title="Карта — мастерская LUNA FLOWERS на Большой Никитской, 12"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=37.5960%2C55.7520%2C37.6120%2C55.7590&layer=mapnik"
-          className="h-[420px] w-full border-y border-border grayscale"
-          loading="lazy"
-        />
-      </Reveal>
     </div>
   );
 }

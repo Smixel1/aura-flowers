@@ -231,7 +231,7 @@ function Bespoke() {
                     {status === "sending" ? "Отправляем" : "Отправить заявку"}
                   </button>
                   <p className="text-xs text-muted-foreground">
-                    Мы свяжемся с вами в течение 2 часов
+                    Мы свяжемся с вами после получения заявки
                   </p>
                 </div>
 

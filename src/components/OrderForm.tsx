@@ -20,7 +20,7 @@ const budgetOptions = ["до 3 000 ₽", "3 000 — 5 000 ₽", "5 000 — 10 00
 export function OrderForm({
   prefill,
   title = "Оформление заказа",
-  note = "Мы свяжемся с вами в течение 2 часов",
+  note = "Мы свяжемся с вами после получения заявки",
   onDone,
 }: {
   prefill: OrderPrefill;

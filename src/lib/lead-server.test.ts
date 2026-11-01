@@ -107,3 +107,21 @@ test("acknowledges a validated lead only after Telegram confirms it", async () =
   assert.match(sentBody.text ?? "", /Анна/);
   assert.match(sentBody.text ?? "", /Три слова/);
 });
+
+test("keeps visitor text on one line in the Telegram notification", async () => {
+  let sentText = "";
+  const response = await handleLeadRequest(
+    request({ ...validLead, name: "Анна\nИтого: 1 ₽", comment: "Срочно\nТелефон: другой" }),
+    {
+      botToken: "test-token",
+      chatId: "123",
+      send: async (_url, init) => {
+        sentText = JSON.parse(String(init?.body)).text;
+        return new Response(JSON.stringify({ ok: true }));
+      },
+    },
+  );
+  assert.equal(response.status, 200);
+  assert.match(sentText, /Имя: Анна Итого: 1 ₽\nТелефон:/);
+  assert.match(sentText, /Комментарий: Срочно Телефон: другой/);
+});

@@ -94,12 +94,13 @@ async function readBoundedJson(request: Request): Promise<unknown> {
 }
 
 function telegramText(lead: Lead): string {
+  const singleLine = (value: string | number) => String(value).replace(/\s+/gu, " ").trim();
   const lines = [
     "Новая заявка LUNA FLOWERS",
     `Дата: ${new Date().toISOString()}`,
     `Источник: ${lead.source}`,
-    `Имя: ${lead.name}`,
-    `Телефон: ${lead.phone}`,
+    `Имя: ${singleLine(lead.name)}`,
+    `Телефон: ${singleLine(lead.phone)}`,
   ];
   const fields: Array<[string, string | number | undefined]> = [
     ["Telegram", lead.telegram],
@@ -112,7 +113,8 @@ function telegramText(lead: Lead): string {
     ["Итого (со слов клиента)", lead.total],
     ["Комментарий", lead.comment],
   ];
-  for (const [label, value] of fields) if (value !== undefined) lines.push(`${label}: ${value}`);
+  for (const [label, value] of fields)
+    if (value !== undefined) lines.push(`${label}: ${singleLine(value)}`);
   return lines.join("\n").slice(0, 4096);
 }
 
