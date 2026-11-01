@@ -1,5 +1,5 @@
 /**
- * Production site origin — single source of truth for canonical, OG and static SEO files.
+ * Production site origin - single source of truth for canonical, OG and static SEO files.
  *
  * Set SITE_URL in .env / .env.local (see .env.example).
  * Available in SSR and client via Vite envPrefix (SITE_).

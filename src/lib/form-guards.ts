@@ -1,4 +1,4 @@
-/** Hidden field filled by bots — reject silently without calling the webhook. */
+/** Hidden field filled by bots - reject silently without calling the webhook. */
 export function isBotSubmission(honeypot: string): boolean {
   return honeypot.trim().length > 0;
 }

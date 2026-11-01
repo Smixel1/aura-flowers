@@ -12,10 +12,10 @@ import { FIELD_LIMITS, isBotSubmission } from "@/lib/form-guards";
 export const Route = createFileRoute("/bespoke")({
   head: () =>
     buildPageMeta({
-      title: "Индивидуальный заказ — LUNA FLOWERS",
+      title: "Индивидуальный заказ - LUNA FLOWERS",
       description:
-        "Индивидуальный флористический дизайн LUNA FLOWERS: свадьбы, мероприятия и корпоративные проекты. Отвечаем в течение двух часов.",
-      ogDescription: "Букет, которого больше нет ни у кого — авторский дизайн под ваш случай.",
+        "Индивидуальный флористический дизайн LUNA FLOWERS: свадьбы, мероприятия и корпоративные проекты.",
+      ogDescription: "Авторский дизайн букета под ваш случай.",
       path: "/bespoke",
     }),
   component: Bespoke,
@@ -85,7 +85,7 @@ function Bespoke() {
               Букет, которого больше нет ни у кого
             </h1>
             <p className="mt-10 max-w-md text-base leading-[1.9] text-foreground/80">
-              Индивидуальный флористический дизайн — это работа с вашей историей, а не выбор из
+              Индивидуальный флористический дизайн начинается с вашей истории, а не с выбора из
               каталога. Мы обсуждаем повод, характер человека, интерьер площадки и палитру, затем
               собираем эскиз и подбираем сорта под сезон.
             </p>
@@ -101,7 +101,7 @@ function Bespoke() {
                 <p className="eyebrow">Заявка принята</p>
                 <h2 className="mt-4 text-3xl">Спасибо</h2>
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                  Флорист свяжется с вами в течение двух часов и предложит время для разговора.
+                  Флорист свяжется с вами и предложит время для разговора.
                 </p>
               </div>
             ) : (
@@ -193,7 +193,7 @@ function Bespoke() {
 
                 <div>
                   <label htmlFor="bs-budget" className="eyebrow block">
-                    Бюджет — до {formatPrice(budget)}
+                    Бюджет: до {formatPrice(budget)}
                   </label>
                   <input
                     id="bs-budget"
@@ -231,13 +231,13 @@ function Bespoke() {
                     {status === "sending" ? "Отправляем" : "Отправить заявку"}
                   </button>
                   <p className="text-xs text-muted-foreground">
-                    Мы свяжемся с вами в течение 2 часов
+                    Мы свяжемся с вами после получения заявки
                   </p>
                 </div>
 
                 {status === "error" ? (
                   <p className="text-xs text-destructive">
-                    Не удалось отправить. Позвоните нам: +7 495 000 00 00
+                    Не удалось отправить заявку. Попробуйте ещё раз позже.
                   </p>
                 ) : null}
               </form>

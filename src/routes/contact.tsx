@@ -3,20 +3,17 @@ import { useState, type FormEvent } from "react";
 import { Reveal } from "@/components/Reveal";
 import { formatTelegram, phonePattern, submitLead } from "@/lib/submit-lead";
 import { buildPageMeta } from "@/lib/seo-meta";
-import { buildFloristJsonLd, jsonLdScript } from "@/lib/site-schema";
 import { HoneypotField } from "@/components/HoneypotField";
 import { FIELD_LIMITS, isBotSubmission } from "@/lib/form-guards";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     ...buildPageMeta({
-      title: "Контакты — LUNA FLOWERS",
-      description:
-        "Мастерская LUNA FLOWERS: Большая Никитская 12, ежедневно 09:00–21:00. Телефон, WhatsApp, Telegram и форма быстрой связи.",
-      ogDescription: "Приходите в мастерскую или напишите — ответим в течение двух часов.",
+      title: "Контакты - LUNA FLOWERS",
+      description: "Связаться с LUNA FLOWERS: оставьте заявку, и мы ответим по телефону.",
+      ogDescription: "Оставьте заявку, и мы свяжемся с вами.",
       path: "/contact",
     }),
-    scripts: [jsonLdScript(buildFloristJsonLd())],
   }),
   component: Contact,
 });
@@ -62,58 +59,16 @@ function Contact() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal>
           <p className="eyebrow">Контакты</p>
-          <h1 className="mt-6 text-5xl leading-tight sm:text-6xl">Мастерская</h1>
+          <h1 className="mt-6 text-5xl leading-tight sm:text-6xl">Связаться с нами</h1>
         </Reveal>
 
         <div className="mt-20 grid gap-20 lg:grid-cols-2">
-          <Reveal className="space-y-12">
-            <div>
-              <p className="eyebrow">Адрес</p>
-              <p className="mt-4 text-lg">Москва, Большая Никитская, 12</p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Ежедневно, 09:00 — 21:00. Самовывоз и приём заказов на месте.
-              </p>
-            </div>
-
-            <div>
-              <p className="eyebrow">Связь</p>
-              <ul className="mt-4 space-y-2 text-lg">
-                <li>
-                  <a href="tel:+74950000000" className="link-underline">
-                    +7 495 000 00 00
-                  </a>
-                </li>
-                <li>
-                  <a href="https://wa.me/74950000000" className="link-underline" rel="noopener noreferrer">
-                    WhatsApp
-                  </a>
-                  <span className="px-3 text-muted-foreground">·</span>
-                  <a href="https://t.me" className="link-underline" rel="noopener noreferrer">
-                    Telegram
-                  </a>
-                </li>
-                <li>
-                  <a href="mailto:hello@lunaflowers.ru" className="link-underline">
-                    hello@lunaflowers.ru
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <p className="eyebrow">Социальные сети</p>
-              <div className="mt-4 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-                <a href="https://instagram.com" className="link-underline" rel="noopener noreferrer">
-                  Instagram
-                </a>
-                <a href="https://pinterest.com" className="link-underline" rel="noopener noreferrer">
-                  Pinterest
-                </a>
-                <a href="https://t.me" className="link-underline" rel="noopener noreferrer">
-                  Telegram-канал
-                </a>
-              </div>
-            </div>
+          <Reveal className="space-y-6">
+            <p className="eyebrow">Связь</p>
+            <h2 className="text-3xl">Расскажите о вашем заказе</h2>
+            <p className="max-w-md text-muted-foreground">
+              Заполните форму, и мы свяжемся с вами по указанному номеру.
+            </p>
           </Reveal>
 
           <Reveal delay={140}>
@@ -122,7 +77,7 @@ function Contact() {
                 <p className="eyebrow">Сообщение отправлено</p>
                 <h2 className="mt-4 text-3xl">Спасибо</h2>
                 <p className="mt-4 text-sm text-muted-foreground">
-                  Мы ответим в течение двух часов.
+                  Мы свяжемся с вами после получения заявки.
                 </p>
               </div>
             ) : (
@@ -205,22 +160,15 @@ function Contact() {
                   {status === "sending" ? "Отправляем" : "Отправить"}
                 </button>
                 {status === "error" ? (
-                  <p className="text-xs text-destructive">Не удалось отправить. Позвоните нам.</p>
+                  <p className="text-xs text-destructive">
+                    Не удалось отправить заявку. Попробуйте ещё раз позже.
+                  </p>
                 ) : null}
               </form>
             )}
           </Reveal>
         </div>
       </div>
-
-      <Reveal className="mt-28">
-        <iframe
-          title="Карта — мастерская LUNA FLOWERS на Большой Никитской, 12"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=37.5960%2C55.7520%2C37.6120%2C55.7590&layer=mapnik"
-          className="h-[420px] w-full border-y border-border grayscale"
-          loading="lazy"
-        />
-      </Reveal>
     </div>
   );
 }

@@ -7,10 +7,10 @@ export function DeliverySection() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal>
           <p className="eyebrow">Доставка</p>
-          <h2 className="mt-4 text-3xl sm:text-4xl">Как мы привозим букеты</h2>
+          <h2 className="mt-4 text-3xl sm:text-4xl">Как оформить доставку</h2>
           <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Доставляем по Москве и ближайшему Подмосковью. Точную стоимость и время подтверждает
-            менеджер при оформлении заказа.
+            Укажите адрес и удобное время в заявке. Возможность, стоимость и срок доставки уточним
+            перед подтверждением заказа.
           </p>
         </Reveal>
 
@@ -28,8 +28,8 @@ export function DeliverySection() {
 
         <Reveal>
           <p className="mt-12 max-w-2xl text-xs leading-relaxed text-muted-foreground">
-            {photoApprovalNote} Если нужного сорта не окажется в наличии, мы согласуем замену
-            заранее — стиль, гамма и стоимость композиции сохраняются.
+            {photoApprovalNote} Если нужного сорта не окажется в наличии, обсудим замену и итоговую
+            стоимость до подтверждения заказа.
           </p>
         </Reveal>
       </div>

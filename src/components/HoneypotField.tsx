@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 
-/** Visually hidden field — bots often fill it; humans should leave it empty. */
+/** Visually hidden field - bots often fill it; humans should leave it empty. */
 export function HoneypotField({
   id,
   value,

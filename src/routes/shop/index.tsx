@@ -20,7 +20,7 @@ import { buildCatalogItemListJsonLd, jsonLdScript } from "@/lib/site-schema";
 export const Route = createFileRoute("/shop/")({
   head: () => ({
     ...buildPageMeta({
-      title: "Каталог букетов — LUNA FLOWERS",
+      title: "Каталог букетов - LUNA FLOWERS",
       description:
         "Более 20 авторских букетов LUNA FLOWERS от 1 500 ₽: свидание, день рождения, годовщина, свадьба. Фильтры по поводу, получателю, бюджету и цвету.",
       ogDescription: "Композиции сезона: от повседневных букетов до премиальных композиций.",
@@ -53,7 +53,7 @@ function FilterPills<T extends string>({
   return (
     <div className="flex flex-col gap-3">
       <span className="eyebrow">{label}</span>
-      <div className="-mx-6 flex gap-x-6 gap-y-2 overflow-x-auto px-6 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+      <div className="flex flex-wrap gap-x-4 gap-y-2 sm:gap-x-6">
         {options.map((option) => (
           <button
             key={option.id}
@@ -97,7 +97,7 @@ function Shop() {
         <p className="eyebrow">Каталог</p>
         <h1 className="mt-6 max-w-2xl text-4xl leading-tight sm:text-5xl lg:text-6xl">Коллекция</h1>
         <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Более двадцати композиций — от повседневных букетов до премиальных заказных работ. Любую
+          Более двадцати композиций: от повседневных букетов до премиальных заказных работ. Любую
           можно изменить под ваш повод и бюджет.
         </p>
       </Reveal>
@@ -122,7 +122,7 @@ function Shop() {
           ]}
         />
         <p className="text-xs leading-relaxed text-muted-foreground">
-          Фильтры необязательны — можно спокойно просматривать всю коллекцию.
+          Фильтры необязательны. Можно просматривать всю коллекцию.
         </p>
       </Reveal>
 
@@ -146,7 +146,7 @@ function Shop() {
 
       {visible.length === 0 ? (
         <p className="py-24 text-center text-sm text-muted-foreground">
-          По этим параметрам готовых композиций нет — соберём индивидуально.
+          По этим параметрам готовых композиций нет. Соберём индивидуально.
         </p>
       ) : (
         <div className="mt-12 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">

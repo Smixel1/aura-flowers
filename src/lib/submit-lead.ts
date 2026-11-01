@@ -15,44 +15,16 @@ export type Lead = {
   comment?: string | undefined;
   telegram?: string | undefined;
   source: LeadSource;
-  createdAt: string;
 };
 
-/**
- * Single submission handler for every form on the site.
- * Set VITE_LEAD_WEBHOOK_URL in .env.local (see .env.example).
- * Without it, leads are logged locally in the browser console.
- */
-export async function submitLead(lead: Omit<Lead, "createdAt">): Promise<void> {
+/** Send every form through the same-origin server route. */
+export async function submitLead(lead: Lead): Promise<void> {
   validateLeadInput(lead);
   const payload = buildLeadPayload(lead);
-  const endpoint = import.meta.env["VITE_LEAD_WEBHOOK_URL"] as string | undefined;
-
-  if (!endpoint) {
-    console.info("[lead]", payload);
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    return;
-  }
-
-  const isGoogleAppsScript = endpoint.includes("script.google.com");
-  const jsonBody = JSON.stringify(payload);
-
-  if (isGoogleAppsScript) {
-    // GAS: simple POST without custom headers — avoids CORS preflight.
-    await fetch(endpoint, {
-      method: "POST",
-      mode: "no-cors",
-      body: jsonBody,
-    });
-    return;
-  }
-
-  // n8n: explicit UTF-8 bytes + charset so the webhook parses Cyrillic correctly.
-  const response = await fetch(endpoint, {
+  const response = await fetch("/api/leads", {
     method: "POST",
-    mode: "cors",
-    headers: { "Content-Type": "application/json; charset=utf-8" },
-    body: new TextEncoder().encode(jsonBody),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
@@ -68,13 +40,12 @@ export function formatTelegram(value: string): string | undefined {
   return trimmed.startsWith("@") ? trimmed : `@${trimmed}`;
 }
 
-/** Ensures optional lead fields are included in the webhook JSON when present. */
-export function buildLeadPayload(lead: Omit<Lead, "createdAt">): Lead {
+/** Ensure optional fields are included only when present. */
+export function buildLeadPayload(lead: Lead): Lead {
   const payload: Lead = {
     name: truncate(lead.name.trim(), FIELD_LIMITS.name),
     phone: truncate(lead.phone.trim(), FIELD_LIMITS.phone),
     source: lead.source,
-    createdAt: new Date().toISOString(),
   };
 
   const clientComment = lead.comment?.trim();
@@ -100,6 +71,8 @@ function validateLeadInput(lead: Omit<Lead, "createdAt">): void {
   if (!phonePattern.test(lead.phone.trim())) throw new Error("Invalid phone");
   if (lead.name.trim().length > FIELD_LIMITS.name) throw new Error("Name too long");
   if (lead.phone.trim().length > FIELD_LIMITS.phone) throw new Error("Phone too long");
-  if (lead.telegram && lead.telegram.length > FIELD_LIMITS.telegram) throw new Error("Telegram too long");
-  if (lead.comment && lead.comment.trim().length > FIELD_LIMITS.comment) throw new Error("Comment too long");
+  if (lead.telegram && lead.telegram.length > FIELD_LIMITS.telegram)
+    throw new Error("Telegram too long");
+  if (lead.comment && lead.comment.trim().length > FIELD_LIMITS.comment)
+    throw new Error("Comment too long");
 }

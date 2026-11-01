@@ -14,6 +14,7 @@ import { Route as BespokeRouteImport } from './routes/bespoke'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ShopRouteRouteImport } from './routes/shop/route'
 import { Route as StoryRouteImport } from './routes/story'
+import { Route as ApiLeadsRouteImport } from './routes/api/leads'
 import { Route as ShopIndexRouteImport } from './routes/shop/index'
 import { Route as ShopSlugRouteImport } from './routes/shop/$slug'
 
@@ -42,6 +43,11 @@ const StoryRoute = StoryRouteImport.update({
   path: '/story',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiLeadsRoute = ApiLeadsRouteImport.update({
+  id: '/api/leads',
+  path: '/api/leads',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopIndexRoute = ShopIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/bespoke': typeof BespokeRoute
   '/contact': typeof ContactRoute
   '/story': typeof StoryRoute
+  '/api/leads': typeof ApiLeadsRoute
   '/shop/$slug': typeof ShopSlugRoute
   '/shop/': typeof ShopIndexRoute
 }
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/bespoke': typeof BespokeRoute
   '/contact': typeof ContactRoute
   '/story': typeof StoryRoute
+  '/api/leads': typeof ApiLeadsRoute
   '/shop/$slug': typeof ShopSlugRoute
   '/shop': typeof ShopIndexRoute
 }
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/bespoke': typeof BespokeRoute
   '/contact': typeof ContactRoute
   '/story': typeof StoryRoute
+  '/api/leads': typeof ApiLeadsRoute
   '/shop/$slug': typeof ShopSlugRoute
   '/shop/': typeof ShopIndexRoute
 }
@@ -88,10 +97,18 @@ export interface FileRouteTypes {
     | '/bespoke'
     | '/contact'
     | '/story'
+    | '/api/leads'
     | '/shop/$slug'
     | '/shop/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bespoke' | '/contact' | '/story' | '/shop/$slug' | '/shop'
+  to:
+    | '/'
+    | '/bespoke'
+    | '/contact'
+    | '/story'
+    | '/api/leads'
+    | '/shop/$slug'
+    | '/shop'
   id:
     | '__root__'
     | '/'
@@ -99,6 +116,7 @@ export interface FileRouteTypes {
     | '/bespoke'
     | '/contact'
     | '/story'
+    | '/api/leads'
     | '/shop/$slug'
     | '/shop/'
   fileRoutesById: FileRoutesById
@@ -109,6 +127,7 @@ export interface RootRouteChildren {
   BespokeRoute: typeof BespokeRoute
   ContactRoute: typeof ContactRoute
   StoryRoute: typeof StoryRoute
+  ApiLeadsRoute: typeof ApiLeadsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -148,6 +167,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/leads': {
+      id: '/api/leads'
+      path: '/api/leads'
+      fullPath: '/api/leads'
+      preLoaderRoute: typeof ApiLeadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop/': {
       id: '/shop/'
       path: '/'
@@ -185,6 +211,7 @@ const rootRouteChildren: RootRouteChildren = {
   BespokeRoute: BespokeRoute,
   ContactRoute: ContactRoute,
   StoryRoute: StoryRoute,
+  ApiLeadsRoute: ApiLeadsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -75,7 +75,7 @@ export function ProductModal({
               <ul className="mt-3 space-y-1.5 text-sm text-foreground/80">
                 {deliveryFacts.map((fact) => (
                   <li key={fact.title}>
-                    {fact.title} — {fact.value}
+                    {fact.title}: {fact.value}
                     <span className="text-muted-foreground"> ({fact.note})</span>
                   </li>
                 ))}

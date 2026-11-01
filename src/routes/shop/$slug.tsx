@@ -28,7 +28,7 @@ export const Route = createFileRoute("/shop/$slug")({
 
     return {
       ...buildPageMeta({
-        title: `${bouquet.name} — LUNA FLOWERS`,
+        title: `${bouquet.name} - LUNA FLOWERS`,
         description: bouquet.description,
         path,
         ogImage: bouquet.image,
@@ -59,7 +59,10 @@ function ProductPage() {
   return (
     <div className="mx-auto max-w-[1400px] px-6 pb-32 pt-32 lg:px-12 lg:pt-48">
       <Reveal>
-        <nav aria-label="Breadcrumb" className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+        <nav
+          aria-label="Breadcrumb"
+          className="text-xs uppercase tracking-[0.22em] text-muted-foreground"
+        >
           <ol className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <li>
               <Link to="/" className="link-underline">
@@ -130,7 +133,7 @@ function ProductPage() {
             <ul className="mt-3 space-y-1.5 text-sm text-foreground/80">
               {deliveryFacts.map((fact) => (
                 <li key={fact.title}>
-                  {fact.title} — {fact.value}
+                  {fact.title}: {fact.value}
                   <span className="text-muted-foreground"> ({fact.note})</span>
                 </li>
               ))}
@@ -147,7 +150,10 @@ function ProductPage() {
             <button type="button" className="btn-gold" onClick={handleOrder}>
               Заказать
             </button>
-            <Link to="/shop" className="link-underline text-[0.7rem] uppercase tracking-[0.22em] text-gold">
+            <Link
+              to="/shop"
+              className="link-underline text-[0.7rem] uppercase tracking-[0.22em] text-gold"
+            >
               ← В каталог
             </Link>
           </div>
