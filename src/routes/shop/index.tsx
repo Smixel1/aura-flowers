@@ -53,7 +53,7 @@ function FilterPills<T extends string>({
   return (
     <div className="flex flex-col gap-3">
       <span className="eyebrow">{label}</span>
-      <div className="-mx-6 flex gap-x-6 gap-y-2 overflow-x-auto px-6 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+      <div className="flex flex-wrap gap-x-4 gap-y-2 sm:gap-x-6">
         {options.map((option) => (
           <button
             key={option.id}

@@ -3,7 +3,8 @@ import type { MouseEvent } from "react";
 import { badgeLabels, formatPrice, type Bouquet } from "@/data/bouquets";
 
 function openModalFromLink(event: MouseEvent, onOpen: () => void) {
-  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)
+    return;
   event.preventDefault();
   onOpen();
 }
@@ -55,7 +56,9 @@ export function ProductCard({
         >
           {bouquet.name}
         </Link>
-        <p className="mt-2 text-sm italic leading-relaxed text-muted-foreground">{bouquet.tagline}</p>
+        <p className="mt-2 text-sm italic leading-relaxed text-muted-foreground">
+          {bouquet.tagline}
+        </p>
         {compositionPreview ? (
           <p className="mt-3 text-xs leading-relaxed text-foreground/55">{compositionPreview}</p>
         ) : null}

@@ -11,7 +11,9 @@ function readBouquetSlugs(): string[] {
   const source = fs.readFileSync(path.join(root, "src/data/bouquets.ts"), "utf8");
   const slugs = [...source.matchAll(/^\s+id: "([^"]+)"/gm)].map((match) => match[1]);
   const unique = [...new Set(slugs)];
-  return unique.filter((slug) => !["to-3000", "3000-5000", "5000-10000", "from-10000"].includes(slug));
+  return unique.filter(
+    (slug) => !["to-3000", "3000-5000", "5000-10000", "from-10000"].includes(slug),
+  );
 }
 
 if (!siteUrl) {

@@ -31,7 +31,9 @@ export function Header() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-500",
-        transparent ? "bg-transparent" : "border-b border-border bg-background/95 shadow-[0_10px_40px_-28px_oklch(0.222_0.009_60_/_18%)] backdrop-blur",
+        transparent
+          ? "bg-transparent"
+          : "border-b border-border bg-background/95 shadow-[0_10px_40px_-28px_oklch(0.222_0.009_60_/_18%)] backdrop-blur",
       )}
     >
       <div

@@ -83,7 +83,7 @@ export function OrderForm({
         <p className="eyebrow">Заявка принята</p>
         <h3 className="mt-4 text-3xl">Спасибо, {name.split(" ")[0]}</h3>
         <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-          Флорист свяжется с вами в течение двух часов и уточнит детали.
+          Флорист свяжется с вами и уточнит детали.
         </p>
       </div>
     );
@@ -239,7 +239,7 @@ export function OrderForm({
 
       {status === "error" ? (
         <p className="text-xs text-destructive">
-          Что-то пошло не так. Позвоните нам: +7 495 000 00 00
+          Не удалось отправить заявку. Попробуйте ещё раз позже.
         </p>
       ) : null}
     </form>

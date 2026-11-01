@@ -14,7 +14,7 @@ export const Route = createFileRoute("/bespoke")({
     buildPageMeta({
       title: "Индивидуальный заказ — LUNA FLOWERS",
       description:
-        "Индивидуальный флористический дизайн LUNA FLOWERS: свадьбы, мероприятия и корпоративные проекты. Отвечаем в течение двух часов.",
+        "Индивидуальный флористический дизайн LUNA FLOWERS: свадьбы, мероприятия и корпоративные проекты.",
       ogDescription: "Букет, которого больше нет ни у кого — авторский дизайн под ваш случай.",
       path: "/bespoke",
     }),
@@ -101,7 +101,7 @@ function Bespoke() {
                 <p className="eyebrow">Заявка принята</p>
                 <h2 className="mt-4 text-3xl">Спасибо</h2>
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                  Флорист свяжется с вами в течение двух часов и предложит время для разговора.
+                  Флорист свяжется с вами и предложит время для разговора.
                 </p>
               </div>
             ) : (
@@ -237,7 +237,7 @@ function Bespoke() {
 
                 {status === "error" ? (
                   <p className="text-xs text-destructive">
-                    Не удалось отправить. Позвоните нам: +7 495 000 00 00
+                    Не удалось отправить заявку. Попробуйте ещё раз позже.
                   </p>
                 ) : null}
               </form>
