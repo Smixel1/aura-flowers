@@ -13,7 +13,7 @@ import { buildOrganizationJsonLd, jsonLdScript } from "@/lib/site-schema";
 export const Route = createFileRoute("/")({
   head: () => ({
     ...buildPageMeta({
-      title: "LUNA FLOWERS — авторские букеты для важных моментов",
+      title: "LUNA FLOWERS - авторские букеты для важных моментов",
       description: "Каталог букетов LUNA FLOWERS и подбор композиции под ваш повод и бюджет.",
       ogDescription: "Цветы, которые говорят то, что не успевают сказать слова.",
       path: "/",
@@ -33,7 +33,7 @@ const benefits = [
   },
   {
     title: "Авторский подход",
-    text: "Каждая композиция — работа одного флориста от начала до конца",
+    text: "Один флорист ведёт композицию от начала до конца",
     icon: <path d="M4 20 15 9m0 0 4-4-1.6-1.6L13.4 7.4M15 9l-2-2M6 20H4v-2" />,
   },
   {
@@ -78,11 +78,11 @@ function Home() {
             className="hero-photo"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/45 to-ink/25" />
+        <div className="hero-overlay" />
         <div className="relative mx-auto w-full max-w-[1400px] px-6 pb-20 pt-36 sm:pb-24 lg:px-12 lg:pb-32">
           <div className="max-w-2xl">
             <Reveal>
-              <p className="text-[0.65rem] uppercase tracking-[0.4em] text-gold">
+              <p className="text-[0.7rem] font-medium uppercase tracking-[0.3em] text-[#ead3a0]">
                 Авторская флористика
               </p>
             </Reveal>
@@ -99,7 +99,7 @@ function Home() {
             </Reveal>
             <Reveal delay={360}>
               <div className="mt-10 flex flex-col gap-4 sm:mt-12">
-                <Link to="/shop" className="btn-gold w-full sm:w-auto sm:self-start">
+                <Link to="/shop" className="btn-gold hero-cta w-full sm:w-auto sm:self-start">
                   Выбрать букет
                 </Link>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
@@ -189,8 +189,7 @@ function Home() {
         <Reveal className="mx-auto max-w-3xl px-6 text-center">
           <p className="text-[0.65rem] uppercase tracking-[0.4em] text-gold">Философия</p>
           <p className="mt-10 font-display text-3xl leading-[1.4] sm:text-4xl">
-            Мы не продаём цветы. Мы помогаем сказать то, что произносится трудно — и остаётся
-            надолго.
+            Цветы помогают сказать то, что трудно произнести, и надолго сохранить этот момент.
           </p>
           <Link
             to="/story"
@@ -206,8 +205,8 @@ function Home() {
           <p className="eyebrow">Подбор букета</p>
           <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl">Не знаете, что выбрать?</h2>
           <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-            Ответьте на пять вопросов — кому, по какому поводу, в какой гамме, на какой бюджет и
-            какого размера — и мы предложим три подходящие композиции из каталога.
+            Ответьте на пять вопросов о получателе, поводе, цвете, бюджете и размере. Мы предложим
+            три композиции из каталога.
           </p>
           <button type="button" onClick={openChat} className="btn-gold mt-10">
             Подобрать букет
@@ -220,8 +219,8 @@ function Home() {
           <p className="eyebrow">Конструктор</p>
           <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl">Собрать примерный состав</h2>
           <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-            Выберите цветок, количество, цвет и упаковку — увидите примерную стоимость до обращения
-            к флористу.
+            Выберите цветок, количество, цвет и упаковку. Примерную стоимость увидите до обращения к
+            флористу.
           </p>
           <Link to="/bespoke" className="btn-gold mt-10">
             Собрать букет

@@ -28,7 +28,7 @@ export const Route = createFileRoute("/shop/$slug")({
 
     return {
       ...buildPageMeta({
-        title: `${bouquet.name} — LUNA FLOWERS`,
+        title: `${bouquet.name} - LUNA FLOWERS`,
         description: bouquet.description,
         path,
         ogImage: bouquet.image,
@@ -133,7 +133,7 @@ function ProductPage() {
             <ul className="mt-3 space-y-1.5 text-sm text-foreground/80">
               {deliveryFacts.map((fact) => (
                 <li key={fact.title}>
-                  {fact.title} — {fact.value}
+                  {fact.title}: {fact.value}
                   <span className="text-muted-foreground"> ({fact.note})</span>
                 </li>
               ))}

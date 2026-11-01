@@ -9,7 +9,7 @@ import { FIELD_LIMITS, isBotSubmission } from "@/lib/form-guards";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     ...buildPageMeta({
-      title: "Контакты — LUNA FLOWERS",
+      title: "Контакты - LUNA FLOWERS",
       description: "Связаться с LUNA FLOWERS: оставьте заявку, и мы ответим по телефону.",
       ogDescription: "Оставьте заявку, и мы свяжемся с вами.",
       path: "/contact",

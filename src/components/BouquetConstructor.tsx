@@ -269,7 +269,7 @@ export function BouquetConstructor({
               <Reveal>
                 <p className="eyebrow">Шаг 2 · Количество</p>
                 <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-                  Уточните количество для основного цветка — {primaryFlower.label.toLowerCase()}.
+                  Уточните количество для основного цветка: {primaryFlower.label.toLowerCase()}.
                 </p>
                 <div className="mt-8 flex flex-wrap items-center gap-8">
                   <QuantityControl
@@ -288,7 +288,7 @@ export function BouquetConstructor({
               <Reveal>
                 <p className="eyebrow">Шаг 2 · Количество</p>
                 <p className="mt-3 text-sm text-muted-foreground">
-                  Добавьте цветы на первом шаге — здесь появится удобный контроль количества.
+                  Добавьте цветы на первом шаге. Здесь появится контроль количества.
                 </p>
               </Reveal>
             )}
@@ -315,7 +315,7 @@ export function BouquetConstructor({
               <div>
                 <p className="eyebrow">Ваша композиция</p>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  Расчёт ориентировочный — финальный состав и стоимость согласует флорист.
+                  Расчёт ориентировочный. Финальный состав и стоимость согласует флорист.
                 </p>
               </div>
 
@@ -384,7 +384,7 @@ export function BouquetConstructor({
                 </div>
               ) : (
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  Выберите цветы — расчёт появится здесь.
+                  Выберите цветы, и расчёт появится здесь.
                 </p>
               )}
 

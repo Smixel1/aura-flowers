@@ -16,11 +16,11 @@ export type ConstructorExtra = {
 
 export const constructorFlowers: ConstructorFlower[] = [
   { id: "rose", label: "Роза", unitPrice: 350, note: "стойкая классика" },
-  { id: "tulip", label: "Тюльпан", unitPrice: 250, note: "январь — апрель" },
+  { id: "tulip", label: "Тюльпан", unitPrice: 250, note: "январь - апрель" },
   { id: "eustoma", label: "Эустома", unitPrice: 300, note: "мягкий объём" },
-  { id: "peony", label: "Пион", unitPrice: 600, note: "май — июль" },
+  { id: "peony", label: "Пион", unitPrice: 600, note: "май - июль" },
   { id: "chrysanthemum", label: "Хризантема", unitPrice: 190, note: "долго стоит" },
-  { id: "ranunculus", label: "Ранункулюс", unitPrice: 340, note: "зима — весна" },
+  { id: "ranunculus", label: "Ранункулюс", unitPrice: 340, note: "зима - весна" },
 ];
 
 export const constructorExtras: ConstructorExtra[] = [
@@ -39,10 +39,10 @@ export const constructorExtras: ConstructorExtra[] = [
   },
 ];
 
-/** Visual example only — not generated from user selections. */
+/** Visual example only - not generated from user selections. */
 export const constructorExampleImage = exampleImage;
 
-export const constructorExampleAlt = "Пример авторской композиции — финальный вид собирает флорист";
+export const constructorExampleAlt = "Пример авторской композиции - финальный вид собирает флорист";
 
 export type FlowerQuantities = Record<string, number>;
 
@@ -126,7 +126,7 @@ export function formatCompositionSummary(
 
   for (const flower of constructorFlowers) {
     const qty = quantities[flower.id] ?? 0;
-    if (qty > 0) parts.push(`${flower.label} — ${qty} шт.`);
+    if (qty > 0) parts.push(`${flower.label} - ${qty} шт.`);
   }
 
   for (const extra of constructorExtras) {

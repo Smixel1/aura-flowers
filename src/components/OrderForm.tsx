@@ -15,7 +15,7 @@ export type OrderPrefill = {
   source: LeadSource;
 };
 
-const budgetOptions = ["до 3 000 ₽", "3 000 — 5 000 ₽", "5 000 — 10 000 ₽", "10 000+ ₽"];
+const budgetOptions = ["до 3 000 ₽", "3 000 - 5 000 ₽", "5 000 - 10 000 ₽", "10 000+ ₽"];
 
 export function OrderForm({
   prefill,

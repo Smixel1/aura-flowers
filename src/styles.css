@@ -81,9 +81,9 @@
   --gold: oklch(0.717 0.087 78);
   --gold-soft: oklch(0.717 0.087 78 / 35%);
 
-  /* dusty rose — secondary botanical accent */
+  /* dusty rose - secondary botanical accent */
   --bloom: oklch(0.72 0.045 12);
-  /* muted burgundy — hover & fine lines */
+  /* muted burgundy - hover & fine lines */
   --burgundy: oklch(0.42 0.07 18);
 
   /* #EDE4D6 */
@@ -209,6 +209,18 @@
   }
 }
 
+@utility hero-cta {
+  background-color: oklch(0.86 0.068 82);
+  border-color: oklch(0.86 0.068 82);
+  color: var(--color-ink);
+
+  &:hover {
+    background-color: var(--color-gold);
+    border-color: var(--color-gold);
+    color: var(--color-ink);
+  }
+}
+
 @utility btn-ink {
   display: inline-flex;
   align-items: center;
@@ -295,11 +307,28 @@
   transform: none;
 }
 
-/* Hero — subtle cinematic fade-in + ~1.5% zoom (barely perceptible) */
+/* Hero - subtle cinematic fade-in + ~1.5% zoom (barely perceptible) */
 @utility hero-photo-wrap {
   position: absolute;
   inset: 0;
   overflow: hidden;
+}
+
+@utility hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    rgb(18 16 14 / 86%) 0%,
+    rgb(18 16 14 / 50%) 52%,
+    rgb(18 16 14 / 25%) 100%
+  );
+
+  @media (min-width: 1024px) {
+    background:
+      linear-gradient(90deg, rgb(18 16 14 / 72%) 0%, rgb(18 16 14 / 42%) 44%, rgb(18 16 14 / 12%) 100%),
+      linear-gradient(180deg, rgb(18 16 14 / 26%) 0%, transparent 35%);
+  }
 }
 
 @utility hero-photo {

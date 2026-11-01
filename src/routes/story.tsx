@@ -6,7 +6,7 @@ import { buildPageMeta, storyOgImage } from "@/lib/seo-meta";
 export const Route = createFileRoute("/story")({
   head: () =>
     buildPageMeta({
-      title: "О бренде — LUNA FLOWERS",
+      title: "О бренде - LUNA FLOWERS",
       description:
         "Подход LUNA FLOWERS к подбору букетов: композиции под настроение, повод и пожелания.",
       ogDescription: "Цветы как язык эмоций: подход LUNA FLOWERS.",
@@ -90,11 +90,11 @@ function Story() {
 
         <Reveal delay={160} className="mt-20 max-w-2xl">
           <p className="text-base leading-[1.9] text-foreground/80">
-            Готовые композиции — в{" "}
+            Готовые композиции - в{" "}
             <Link to="/shop" className="link-underline">
               каталоге
             </Link>
-            . Если нужен свой состав —{" "}
+            . Если нужен свой состав -{" "}
             <Link to="/bespoke" className="link-underline">
               соберите примерный вариант
             </Link>
